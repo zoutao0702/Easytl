@@ -139,7 +139,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="CommunicationHelper\COMHelper.cs" />
+    <Compile Include="CommunicationHelper\SerialPort.cs" />
     <Compile Include="CommunicationHelper\PortHelper.cs" />
     <Compile Include="CommunicationHelper\UDPClient.cs" />
     <Compile Include="CommunicationHelper\TCPServer.cs" />

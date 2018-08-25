@@ -609,19 +609,6 @@ namespace Easytl
         }
 
         /// <summary>
-        /// 获取CRC校验码
-        /// </summary>
-        public static int GetCRC(this string AgreementData)
-        {
-            int CRC = Convert.ToInt32(AgreementData.Substring(0, 2), 16);
-            for (int i = 1; i < AgreementData.Length / 2; i++)
-            {
-                CRC = CRC ^ Convert.ToInt32(AgreementData.Substring((i * 2), 2), 16);
-            }
-            return CRC;
-        }
-
-        /// <summary>
         /// 16进制字符串转换为2进制字符串
         /// </summary>
         /// <param name="Str16">16进制字符串</param>
@@ -673,6 +660,30 @@ namespace Easytl
                 Str16 += Str_Add0_Before(Convert.ToString(Convert.ToByte(Str2.Substring(i * 8, 8), 2), 16), 2);
             }
             return Str16;
+        }
+
+        /// <summary>
+        /// 获取字节数
+        /// </summary>
+        public static int GetByteLength(this byte b)
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// 获取字节数
+        /// </summary>
+        public static int GetByteLength(this char b)
+        {
+            return 1;
+        }
+
+        /// <summary>
+        /// 获取字节数
+        /// </summary>
+        public static int GetByteLength(this int b)
+        {
+            return 4;
         }
 
         /// <summary>

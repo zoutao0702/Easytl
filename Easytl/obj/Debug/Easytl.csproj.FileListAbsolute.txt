@@ -30,7 +30,6 @@ D:\Code\TCustomDLL\TCustomDLL\TCustomDLL\obj\Debug\Easytl.dll
 D:\Code\TCustomDLL\TCustomDLL\TCustomDLL\obj\Debug\Easytl.pdb
 D:\Code\TCustomDLL\TCustomDLL\TCustomDLL\bin\Debug\Easytl.XML
 D:\Code\Easytl\Easytl\Easytl\bin\Debug\Easytl.XML
-D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.csprojResolveAssemblyReference.cache
 D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.CustomControllers.CustomController.My_ComboBox.resources
 D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.CustomControllers.CustomController.My_DataGridView.resources
 D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.CustomControllers.CustomController.My_PictureBox.resources
@@ -61,3 +60,4 @@ D:\Code\Easytl\Easytl\Easytl\bin\Debug\zh-Hans\System.Web.Razor.resources.dll
 D:\Code\Easytl\Easytl\Easytl\bin\Debug\zh-Hans\System.Web.WebPages.Razor.resources.dll
 D:\Code\Easytl\Easytl\Easytl\bin\Debug\zh-Hans\System.Web.WebPages.resources.dll
 D:\Code\Easytl\Easytl\Easytl\bin\Debug\zh-Hans\System.Web.WebPages.Deployment.resources.dll
+D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.csprojResolveAssemblyReference.cache

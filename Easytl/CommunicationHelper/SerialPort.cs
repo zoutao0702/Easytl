@@ -2,24 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
-using System.Net.Sockets;
+using System.IO.Ports;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Easytl.CommunicationHelper
 {
     /// <summary>
-    /// 
+    /// 串口操作类
     /// </summary>
-    public abstract class UDPClient
+    public abstract class SerialPort
     {
         #region 公共属性
 
         /// <summary>
-        /// 获取本地UDP连接端口
+        /// 获取COM串口号
         /// </summary>
-        public int Port_Local { get; private set; }
+        public int COM { get; set; }
+
+        /// <summary>
+        /// 获取波特率
+        /// </summary>
+        public int BaudRate { get; set; }
+
+        /// <summary>
+        /// 串口是否已打开
+        /// </summary>
+        public bool IsOpen
+        {
+            get
+            {
+                if (_SerialPort != null)
+                    return _SerialPort.IsOpen;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 是否开启重连
+        /// </summary>
+        public bool ReConnection { get; set; }
 
         #endregion
 
@@ -37,12 +59,12 @@ namespace Easytl.CommunicationHelper
 
         #endregion
 
-        #region 内部使用变量
+        #region 内部参数
 
         /// <summary>
-        /// UDP连接
+        /// COM连接
         /// </summary>
-        UdpClient UDP_Client;
+        System.IO.Ports.SerialPort _SerialPort;
 
         /// <summary>
         /// 缓冲区字符串
@@ -53,10 +75,8 @@ namespace Easytl.CommunicationHelper
 
         #region 接收到数据时触发事件
 
-        public delegate void Data_Recive_Delegate(string Recive_Data, IPEndPoint Local_EndPoint, IPEndPoint Net_EndPoint);
-        /// <summary>
-        /// 接收到来自网络的数据时触发事件
-        /// </summary>
+        public delegate void Data_Recive_Delegate(string Recive_Data, int COM_Id);
+
         public event Data_Recive_Delegate Data_Recive_Event;
 
         #endregion
@@ -69,66 +89,141 @@ namespace Easytl.CommunicationHelper
 
         #endregion
 
+        #region 串口打开时触发事件
+
+        public delegate void Open_Delegate();
+
+        public event Open_Delegate Open_Event;
+
+        #endregion
+
+        #region 串口关闭时触发事件
+
+        public delegate void Close_Delegate();
+
+        public event Close_Delegate Close_Event;
+
+        #endregion
+
 
         /// <summary>
-        /// UDPClient实例化
+        /// SerialPort实例化
         /// </summary>
-        public UDPClient()
-        { }
-
-
-        /// <summary>
-        /// UDPClient实例化
-        /// </summary>
-        /// <param name="_Port_Local">绑定的本地UDP通讯端口号</param>
-        public UDPClient(int _Port_Local)
+        public SerialPort()
         {
-            Start(_Port_Local);
+            COM = 1;
+            BaudRate = 57600;
         }
 
 
         /// <summary>
-        /// 开始侦听端口并收发数据
+        /// SerialPort实例化
         /// </summary>
-        /// <param name="_Port_Local">绑定的本地UDP通讯端口号</param>
-        public void Start(int _Port_Local)
+        /// <param name="com">绑定的本机接收串口号</param>
+        /// <param name="baudRate">波特率</param>
+        public SerialPort(int com, int baudRate)
         {
-            Port_Local = _Port_Local;
-            UDP_Client = new UdpClient(Port_Local);
+            COM = com;
+            BaudRate = baudRate;
+        }
 
-            //开启接收数据线程
-            new Task(Recive).Start();
+
+        /// <summary>
+        /// 打开串口
+        /// </summary>
+        public void Open()
+        {
+            try
+            {
+                if ((_SerialPort == null) || (!_SerialPort.IsOpen))
+                {
+                    if (_SerialPort == null)
+                        _SerialPort = new System.IO.Ports.SerialPort("COM" + COM.ToString(), BaudRate);
+                    else
+                    {
+                        _SerialPort.PortName = "COM" + COM.ToString();
+                        _SerialPort.BaudRate = BaudRate;
+                    }
+                    _SerialPort.Open();
+                    if (_SerialPort.IsOpen)
+                    {
+                        Open_Event?.Invoke();
+
+                        //开启接收数据线程
+                        new Task(Recive).Start();
+                    }
+                    else
+                        throw new Exception("串口打开失败");
+                }
+                else
+                    throw new Exception("串口已打开");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+
+        /// <summary>
+        /// 串口重连
+        /// </summary>
+        private void ReConn()
+        {
+            while (true)
+            {
+                Thread.Sleep(500);
+                if (ReConnection)
+                {
+                    try
+                    {
+                        Open();
+                        if (_SerialPort.IsOpen)
+                            break;
+                    }
+                    catch { }
+                }
+                else
+                    break;
+            }
         }
 
 
         /// <summary>
         /// 接收数据
         /// </summary>
-        void Recive()
+        private void Recive()
         {
-            IPEndPoint Remote_IPEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0);
             string Command = null;
+            byte[] bs = null;
             while (true)
             {
                 Thread.Sleep(10);
 
                 try
                 {
-                    if (UDP_Client != null)
+                    if (_SerialPort.IsOpen)
                     {
-                        if (UDP_Client.Available > 0)
+                        if (_SerialPort.BytesToRead > 0)
                         {
-                            ReciveMessage.Append(BitConverter.ToString(UDP_Client.Receive(ref Remote_IPEndPoint)).ToUpper().Trim().Replace("-", string.Empty));
+                            bs = new byte[_SerialPort.BytesToRead];
+                            _SerialPort.Read(bs, 0, bs.Length);
+                            ReciveMessage.Append(BitConverter.ToString(bs).ToUpper().Trim().Replace("-", string.Empty));
 
                             Command = ReciveMessage.ToString();
                             ReciveMessage.Remove(0, AnalyCommand(ref Command));
 
                             if (!string.IsNullOrEmpty(Command))
-                                Data_Recive_Event?.Invoke(Command, (IPEndPoint)UDP_Client.Client.LocalEndPoint, Remote_IPEndPoint);
+                                Data_Recive_Event?.Invoke(Command, COM);
                         }
                     }
                     else
+                    {
+                        Close_Event?.Invoke();
+                        if (ReConnection)
+                            new Task(ReConn).Start();
                         break;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -174,14 +269,12 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 发送数据
         /// </summary>
-        /// <param name="Data">字符串</param>
-        /// <param name="Net_Address">要发送的远程端IP地址</param>
-        /// <param name="Net_Port">要发送的远程端端口号</param>
-        public virtual void Send(string Data, string Net_Address, int? Net_Port = null)
+        /// <param name="Data">16进制字符串</param>
+        public virtual void Send(string Data)
         {
             try
             {
-                if (Data == string.Empty)
+                if (string.IsNullOrEmpty(Data))
                     throw new Exception("数据为空");
 
                 if (Data.Length % 2 != 0)
@@ -194,8 +287,7 @@ namespace Easytl.CommunicationHelper
                     bs[i] = Convert.ToByte(Data.Substring(i * 2, 2), 16);
                 }
 
-                if (UDP_Client.Send(bs, bs.Length, Net_Address, ((Net_Port.HasValue) ? Net_Port.Value : Port_Local)) <= 0)
-                    throw new Exception("发送失败");
+                _SerialPort.Write(bs, 0, bs.Length);
             }
             catch (Exception e)
             {
@@ -205,19 +297,16 @@ namespace Easytl.CommunicationHelper
 
 
         /// <summary>
-        /// 关闭所有连接并释放内存
+        /// 关闭串口
         /// </summary>
         public void Close()
         {
-            ReciveMessage.Clear();
-
             try
             {
-                if (UDP_Client != null)
-                {
-                    UDP_Client.Close();
-                    UDP_Client = null;
-                }
+                ReciveMessage.Clear();
+                ReConnection = false;
+                if (_SerialPort.IsOpen)
+                    _SerialPort.Close();
             }
             catch (Exception e)
             {

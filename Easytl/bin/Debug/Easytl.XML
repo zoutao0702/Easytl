@@ -4,9 +4,24 @@
         <name>Easytl</name>
     </assembly>
     <members>
+        <member name="T:Easytl.CommunicationHelper.TCPClient">
+            <summary>
+            TCP客户端操作类
+            </summary>
+        </member>
         <member name="P:Easytl.CommunicationHelper.TCPClient.Connected">
             <summary>
             获取到远程主机的连接状态
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.Command_Head">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.Command_MinLen">
+            <summary>
+            协议最小长度
             </summary>
         </member>
         <member name="F:Easytl.CommunicationHelper.TCPClient.TCP_Client">
@@ -21,7 +36,7 @@
         </member>
         <member name="E:Easytl.CommunicationHelper.TCPClient.Data_Recive_Event">
             <summary>
-            接收到来自网络的数据时触发事件
+            接收到数据时触发事件
             </summary>
         </member>
         <member name="M:Easytl.CommunicationHelper.TCPClient.Connect(System.Net.IPEndPoint)">
@@ -34,97 +49,122 @@
             接收数据
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.TCPClient.AnalyCommand(System.String,System.String@)">
+        <member name="M:Easytl.CommunicationHelper.TCPClient.Body_Len(System.String)">
             <summary>
-            分析协议，必须重写此方法
+            获取协议内容长度（若重写了AnalyCommand方法，则该方法无效）
             </summary>
-            <returns>返回协议长度（若协议解析失败则返回失败部分长度，若协议不完整则返回0）</returns>
+            <param name="Command_Min">最小长度的协议</param>
+            <returns>返回协议内容长度</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.AnalyCommand(System.String@)">
+            <summary>
+            分析接收到的协议数据，并把它转为正确的一条协议输出，返回应清除的协议数据长度
+            </summary>
         </member>
         <member name="M:Easytl.CommunicationHelper.TCPClient.Send(System.String)">
             <summary>
             发送数据
             </summary>
-            <param name="Data">字符串</param>
+            <param name="Data">16进制字符串</param>
         </member>
         <member name="M:Easytl.CommunicationHelper.TCPClient.Close">
             <summary>
             关闭所有连接并释放内存
             </summary>
         </member>
-        <member name="F:Easytl.CommunicationHelper.COMHelper.isdispose">
+        <member name="T:Easytl.CommunicationHelper.SerialPort">
             <summary>
-            该类是否已被释放
+            串口操作类
             </summary>
         </member>
-        <member name="P:Easytl.CommunicationHelper.COMHelper.IsDispose">
-            <summary>
-            该类是否已被释放
-            </summary>
-        </member>
-        <member name="F:Easytl.CommunicationHelper.COMHelper._COM_Bind_Id">
-            <summary>
-            COM串口号
-            </summary>
-        </member>
-        <member name="P:Easytl.CommunicationHelper.COMHelper.COM_Bind_Id">
+        <member name="P:Easytl.CommunicationHelper.SerialPort.COM">
             <summary>
             获取COM串口号
             </summary>
         </member>
-        <member name="F:Easytl.CommunicationHelper.COMHelper._COM_Bind_BaudRate">
+        <member name="P:Easytl.CommunicationHelper.SerialPort.BaudRate">
             <summary>
-            COM波特率
+            获取波特率
             </summary>
         </member>
-        <member name="P:Easytl.CommunicationHelper.COMHelper.COM_Bind_BaudRate">
+        <member name="P:Easytl.CommunicationHelper.SerialPort.IsOpen">
             <summary>
-            获取COM波特率
+            串口是否已打开
             </summary>
         </member>
-        <member name="F:Easytl.CommunicationHelper.COMHelper.COM_Client">
+        <member name="P:Easytl.CommunicationHelper.SerialPort.ReConnection">
+            <summary>
+            是否开启重连
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.Command_Head">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.Command_MinLen">
+            <summary>
+            协议最小长度
+            </summary>
+        </member>
+        <member name="F:Easytl.CommunicationHelper.SerialPort._SerialPort">
             <summary>
             COM连接
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.COMHelper.Data_Recive_Fun(System.String,System.Int32)">
+        <member name="F:Easytl.CommunicationHelper.SerialPort.ReciveMessage">
             <summary>
-            接收到来自串口的数据时触发事件
+            缓冲区字符串
             </summary>
-            <param name="Recive_Data"></param>
-            <param name="COM_Id"></param>
         </member>
-        <member name="M:Easytl.CommunicationHelper.COMHelper.#ctor(System.Int32,System.Int32)">
+        <member name="M:Easytl.CommunicationHelper.SerialPort.#ctor">
             <summary>
-            COM_Touch实例化
+            SerialPort实例化
             </summary>
-            <param name="Port_Bind">绑定的本机接收串口号</param>
         </member>
-        <member name="M:Easytl.CommunicationHelper.COMHelper.COM_Open">
+        <member name="M:Easytl.CommunicationHelper.SerialPort.#ctor(System.Int32,System.Int32)">
+            <summary>
+            SerialPort实例化
+            </summary>
+            <param name="com">绑定的本机接收串口号</param>
+            <param name="baudRate">波特率</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Open">
             <summary>
             打开串口
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.COMHelper.COM_Close">
+        <member name="M:Easytl.CommunicationHelper.SerialPort.ReConn">
             <summary>
-            关闭串口
+            串口重连
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.COMHelper.Recive(System.Object)">
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Recive">
             <summary>
             接收数据
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.COMHelper.Send(System.String,System.Int32)">
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Body_Len(System.String)">
+            <summary>
+            获取协议内容长度（若重写了AnalyCommand方法，则该方法无效）
+            </summary>
+            <param name="Command_Min">最小长度的协议</param>
+            <returns>返回协议内容长度</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.AnalyCommand(System.String@)">
+            <summary>
+            分析接收到的协议数据，并把它转为正确的一条协议输出，返回应清除的协议数据长度
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Send(System.String)">
             <summary>
             发送数据
             </summary>
-            <param name="Data_Base16">16进制字符串</param>
-            <param name="COM_Bind">要发送的COM地址</param>
-            <returns>0：发送失败，1：发送成功，-99：数据为空</returns>
+            <param name="Data">16进制字符串</param>
         </member>
-        <member name="M:Easytl.CommunicationHelper.COMHelper.Dispose">
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Close">
             <summary>
-            关闭所有连接并释放内存
+            关闭串口
             </summary>
         </member>
         <member name="T:Easytl.CommunicationHelper.PortHelper">
@@ -142,9 +182,24 @@
             在范围内获取一个可使用的端口号
             </summary>
         </member>
+        <member name="T:Easytl.CommunicationHelper.UDPClient">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="P:Easytl.CommunicationHelper.UDPClient.Port_Local">
             <summary>
             获取本地UDP连接端口
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.UDPClient.Command_Head">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.UDPClient.Command_MinLen">
+            <summary>
+            协议最小长度
             </summary>
         </member>
         <member name="F:Easytl.CommunicationHelper.UDPClient.UDP_Client">
@@ -162,22 +217,39 @@
             接收到来自网络的数据时触发事件
             </summary>
         </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.#ctor">
+            <summary>
+            UDPClient实例化
+            </summary>
+        </member>
         <member name="M:Easytl.CommunicationHelper.UDPClient.#ctor(System.Int32)">
             <summary>
             UDPClient实例化
             </summary>
-            <param name="_Port_Local">绑定的本机接收端口号</param>
+            <param name="_Port_Local">绑定的本地UDP通讯端口号</param>
         </member>
-        <member name="M:Easytl.CommunicationHelper.UDPClient.Recive(System.Object)">
+        <member name="M:Easytl.CommunicationHelper.UDPClient.Start(System.Int32)">
+            <summary>
+            开始侦听端口并收发数据
+            </summary>
+            <param name="_Port_Local">绑定的本地UDP通讯端口号</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.Recive">
             <summary>
             接收数据
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.UDPClient.AnalyCommand(System.String,System.String@)">
+        <member name="M:Easytl.CommunicationHelper.UDPClient.Body_Len(System.String)">
             <summary>
-            分析协议，必须重写此方法
+            获取协议内容长度（若重写了AnalyCommand方法，则该方法无效）
             </summary>
-            <returns>返回协议长度（若协议解析失败则返回失败部分长度，若协议不完整则返回0）</returns>
+            <param name="Command_Min">最小长度的协议</param>
+            <returns>返回协议内容长度</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.AnalyCommand(System.String@)">
+            <summary>
+            分析接收到的协议数据，并把它转为正确的一条协议输出，返回应清除的协议数据长度
+            </summary>
         </member>
         <member name="M:Easytl.CommunicationHelper.UDPClient.Send(System.String,System.String,System.Nullable{System.Int32})">
             <summary>
@@ -190,6 +262,26 @@
         <member name="M:Easytl.CommunicationHelper.UDPClient.Close">
             <summary>
             关闭所有连接并释放内存
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.TCPServer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPServer.Port_Local">
+            <summary>
+            获取本地TCP侦听端口
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPServer.Command_Head">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPServer.Command_MinLen">
+            <summary>
+            协议最小长度
             </summary>
         </member>
         <member name="F:Easytl.CommunicationHelper.TCPServer.TCP_Listener">
@@ -217,9 +309,20 @@
             接收到来自网络的数据时触发事件
             </summary>
         </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.#ctor">
+            <summary>
+            TCP_Touch实例化
+            </summary>
+        </member>
         <member name="M:Easytl.CommunicationHelper.TCPServer.#ctor(System.Int32)">
             <summary>
             TCP_Touch实例化
+            </summary>
+            <param name="_Port_Local">绑定的本地TCP通讯端口号</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.Start(System.Int32)">
+            <summary>
+            开始侦听端口并收发数据
             </summary>
             <param name="_Port_Local">绑定的本地TCP通讯端口号</param>
         </member>
@@ -233,11 +336,17 @@
             接收数据
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.TCPServer.AnalyCommand(System.String,System.String@)">
+        <member name="M:Easytl.CommunicationHelper.TCPServer.Body_Len(System.String)">
             <summary>
-            分析协议，必须重写此方法
+            获取协议内容长度（若重写了AnalyCommand方法，则该方法无效）
             </summary>
-            <returns>返回协议长度（若协议解析失败则返回失败部分长度，若协议不完整则返回0）</returns>
+            <param name="Command_Min">最小长度的协议</param>
+            <returns>返回协议内容长度</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.AnalyCommand(System.String@)">
+            <summary>
+            分析接收到的协议数据，并把它转为正确的一条协议输出，返回应清除的协议数据长度
+            </summary>
         </member>
         <member name="M:Easytl.CommunicationHelper.TCPServer.Send(System.String,System.String)">
             <summary>
@@ -246,7 +355,7 @@
             <param name="Data">字符串</param>
             <param name="Net_Address">要发送的远程端IP地址</param>
         </member>
-        <member name="M:Easytl.CommunicationHelper.TCPServer.Dispose">
+        <member name="M:Easytl.CommunicationHelper.TCPServer.Close">
             <summary>
             关闭所有连接并释放内存
             </summary>
@@ -434,11 +543,6 @@
             <param name="ContentEnd">截止字符</param>
             <returns></returns>
         </member>
-        <member name="M:Easytl.THelper.GetCRC(System.String)">
-            <summary>
-            获取CRC校验码
-            </summary>
-        </member>
         <member name="M:Easytl.THelper.Str16_To_Str2(System.String)">
             <summary>
             16进制字符串转换为2进制字符串
@@ -456,6 +560,21 @@
             2进制字符串转换为16进制字符串
             </summary>
             <param name="Str2">2进制字符串</param>
+        </member>
+        <member name="M:Easytl.THelper.GetByteLength(System.Byte)">
+            <summary>
+            获取字节数
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetByteLength(System.Char)">
+            <summary>
+            获取字节数
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetByteLength(System.Int32)">
+            <summary>
+            获取字节数
+            </summary>
         </member>
         <member name="M:Easytl.THelper.StrReverse(System.String,System.Int32)">
             <summary>
