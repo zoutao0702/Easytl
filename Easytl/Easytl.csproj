@@ -45,147 +45,31 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommunicationHelper\TCPClient.cs" />
     <Compile Include="SignHelper\SignHelper.cs" />
     <Compile Include="THelper.cs" />
-    <Compile Include="CustomClass\BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomController\My_BoundDataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomController\My_DataGridView\DataGridViewCheckBoxColumn_MultiSelect.cs" />
-    <Compile Include="CustomControllers\CustomController\My_DataGridView\DataGridViewCheckBoxColumn_OneSelect.cs" />
-    <Compile Include="CustomControllers\CustomController\My_DataGridView\DataGridViewTextBoxColumn_UnionCombox.cs" />
-    <Compile Include="CustomControllers\CustomController\My_DataGridView\DataGridViewTextBoxColumn_XH.cs" />
-    <Compile Include="CustomClass\ListItem.cs" />
-    <Compile Include="CustomControllers\CustomController\My_ComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomController\My_DataGridView\My_DataGridView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomController\My_PictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomController\My_TextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomController\My_TreeView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\DataProNameShowBind.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\DataProNameShowBind.designer.cs">
-      <DependentUpon>DataProNameShowBind.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\IPTextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\IPTextBox.Designer.cs">
-      <DependentUpon>IPTextBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\MsgBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\MsgBox.Designer.cs">
-      <DependentUpon>MsgBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\PhotoBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CustomControllers\CustomForm\PhotoBox.Designer.cs">
-      <DependentUpon>PhotoBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="SignHelper\Attribute\NoSignAttribute.cs" />
-    <Compile Include="PayHelper\WeiXinHelper.cs" />
-    <Compile Include="PayHelper\WeiXin\WXConvert.cs" />
-    <Compile Include="PayHelper\WeiXin\WXPara.cs" />
-    <Compile Include="PayHelper\WeiXin\WXP_apprequest.cs" />
-    <Compile Include="PayHelper\WeiXin\WXP_orderquery.cs" />
-    <Compile Include="PayHelper\WeiXin\WXReturn.cs" />
-    <Compile Include="PayHelper\WeiXin\WXReturn_Success.cs" />
-    <Compile Include="PayHelper\WeiXin\WXP_unifiedorder.cs" />
-    <Compile Include="PayHelper\WeiXin\WXR_orderquery.cs" />
-    <Compile Include="PayHelper\WeiXin\WXR_paynotify.cs" />
-    <Compile Include="PayHelper\WeiXin\WXR_unifiedorder.cs" />
     <Compile Include="SafeHelper\BlowFishCryptoServiceProvider.cs" />
     <Compile Include="SafeHelper\RC4CryptoServiceProvider.cs" />
     <Compile Include="SqlHelper\OleDbHelper.cs" />
     <Compile Include="SqlHelper\SqlServerHelper.cs" />
-    <Compile Include="FileHelper\FolderHelper.cs" />
-    <Compile Include="FileHelper\IniHelper.cs" />
-    <Compile Include="FileHelper\LogHelper.cs" />
     <Compile Include="SafeHelper\EncryptionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="CommunicationHelper\SerialPort.cs" />
     <Compile Include="CommunicationHelper\PortHelper.cs" />
     <Compile Include="CommunicationHelper\UDPClient.cs" />
     <Compile Include="CommunicationHelper\TCPServer.cs" />
-    <Compile Include="WebControllers\BaseController.cs" />
-    <Compile Include="WebControllers\CheckAttribute.cs" />
-    <Compile Include="WebControllers\PagerController.cs" />
-    <Compile Include="WebHelper\RequestHelper.cs" />
-    <Compile Include="WebHelper\ResponseHelper.cs" />
-    <Compile Include="WebHelper\WebHelper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CustomControllers\CustomController\My_ComboBox.resx">
-      <DependentUpon>My_ComboBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomControllers\CustomController\My_DataGridView\My_DataGridView.resx">
-      <DependentUpon>My_DataGridView.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomControllers\CustomController\My_PictureBox.resx">
-      <DependentUpon>My_PictureBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomControllers\CustomForm\DataProNameShowBind.resx">
-      <DependentUpon>DataProNameShowBind.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomControllers\CustomForm\IPTextBox.resx">
-      <DependentUpon>IPTextBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomControllers\CustomForm\MsgBox.resx">
-      <DependentUpon>MsgBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CustomControllers\CustomForm\PhotoBox.resx">
-      <DependentUpon>PhotoBox.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -355,43 +355,6 @@ namespace Easytl
             return false;
         }
 
-        ///// <summary>
-        ///// 获取本地IPv4地址
-        ///// </summary>
-        ///// <returns></returns>
-        //public static string GetHostIPv4()
-        //{
-        //    System.Net.IPAddress[] IPs = System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName());
-        //    foreach (var item in IPs)
-        //    {
-        //        if (System.Text.RegularExpressions.Regex.IsMatch(item.ToString(), "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
-        //                                                                        + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-        //                                                                        + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-        //                                                                        + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$"))
-        //        {
-        //            return item.ToString();
-        //        }
-        //    }
-
-        //    return string.Empty;
-        //}
-
-        /// <summary>
-        /// 向用户显示控件
-        /// </summary>
-        public static void Show(this System.Windows.Forms.Form MyForm, System.Windows.Forms.IWin32Window Owner = null)
-        {
-            if (MyForm.Visible)
-                MyForm.Focus();
-            else
-            {
-                if (Owner == null)
-                    MyForm.Show();
-                else
-                    MyForm.Show(Owner);
-            }
-        }
-
         /// <summary>
         /// 日期转化为(16进制)2字节字符串（默认支持最大日期到2063年）
         /// </summary>
@@ -855,15 +818,15 @@ namespace Easytl
         /// <summary>
         /// 设置ConnectionString连接字符串
         /// </summary>
-        public static void SetConnectionString(string Name, string ConnectionString)
+        public static void SetConnectionString(string Name, string ConnectionString, bool Refresh = true)
         {
-            SetConnectionString(Name, ConnectionString, System.Configuration.ConfigurationManager.ConnectionStrings[Name].ProviderName);
+            SetConnectionString(Name, ConnectionString, System.Configuration.ConfigurationManager.ConnectionStrings[Name].ProviderName, Refresh);
         }
 
         /// <summary>
         /// 设置ConnectionString连接字符串
         /// </summary>
-        public static void SetConnectionString(string Name, string ConnectionString, string ProviderName)
+        public static void SetConnectionString(string Name, string ConnectionString, string ProviderName, bool Refresh = true)
         {
             System.Configuration.Configuration Config = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.None);
             System.Configuration.ConnectionStringSettings ConnStrSettings = Config.ConnectionStrings.ConnectionStrings[Name];
@@ -876,7 +839,9 @@ namespace Easytl
                 Config.ConnectionStrings.ConnectionStrings.Add(new System.Configuration.ConnectionStringSettings(Name, ConnectionString, ProviderName));
 
             Config.Save(System.Configuration.ConfigurationSaveMode.Modified);
-            System.Configuration.ConfigurationManager.RefreshSection("connectionStrings");
+
+            if (Refresh)
+                System.Configuration.ConfigurationManager.RefreshSection("connectionStrings");
         }
 
         /// <summary>
@@ -890,7 +855,7 @@ namespace Easytl
         /// <summary>
         /// 设置AppSetting配置字符串
         /// </summary>
-        public static void SetAppSettingValue(string Name, string Value)
+        public static void SetAppSettingValue(string Name, string Value, bool Refresh = true)
         {
             System.Configuration.Configuration Config = System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.None);
             if (Config.AppSettings.Settings[Name] != null)
@@ -899,7 +864,9 @@ namespace Easytl
                 Config.AppSettings.Settings.Add(new System.Configuration.KeyValueConfigurationElement(Name, Value));
 
             Config.Save(System.Configuration.ConfigurationSaveMode.Modified);
-            System.Configuration.ConfigurationManager.RefreshSection("appSettings");
+
+            if (Refresh)
+                System.Configuration.ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

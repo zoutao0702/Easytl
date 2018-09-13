@@ -14,35 +14,35 @@ namespace Easytl.SafeHelper
     /// </summary>
     public class EncryptionHelper
     {
-        //CipherMode _Encrypt_Mode = CipherMode.CBC;
-        ///// <summary>
-        ///// 加密模式
-        ///// </summary>
-        //public CipherMode Encrypt_Mode
-        //{
-        //    get { return _Encrypt_Mode; }
-        //    set { _Encrypt_Mode = value; }
-        //}
+        /// <summary>
+        /// 获取或设置加密操作的加密模式
+        /// </summary>
+        public CipherMode Mode { get; set; } = CipherMode.CBC;
 
-        //PaddingMode _Encrypt_Pad = PaddingMode.PKCS7;
-        ///// <summary>
-        ///// 填充方式
-        ///// </summary>
-        //public PaddingMode Encrypt_Pad
-        //{
-        //    get { return _Encrypt_Pad; }
-        //    set { _Encrypt_Pad = value; }
-        //}
+        /// <summary>
+        /// 获取或设置加密操作的填充方式
+        /// </summary>
+        public PaddingMode Padding { get; set; } = PaddingMode.PKCS7;
 
-        //Encoding _Encoding_Mode = Encoding.Default;
-        ///// <summary>
-        ///// 编码模式
-        ///// </summary>
-        //public Encoding Encoding_Mode
-        //{
-        //    get { return _Encoding_Mode; }
-        //    set { _Encoding_Mode = value; }
-        //}
+        /// <summary>
+        /// 获取或设置加密操作的编码模式
+        /// </summary>
+        public Encoding Encode { get; set; } = Encoding.Default;
+
+        /// <summary>
+        /// 获取或设置加密操作的块大小（以位为单位）。
+        /// </summary>
+        public int BlockSize { get; set; } = 128;
+
+        /// <summary>
+        /// RSA加密秘钥大小
+        /// </summary>
+        public int dwKeySize { get; set; } = 1024;
+
+        /// <summary>
+        /// 加解密有误时抛出异常
+        /// </summary>
+        public bool throwEx { get; set; } = true;
 
         /// <summary>
         /// 加密类型
@@ -92,9 +92,9 @@ namespace Easytl.SafeHelper
         }
 
         /// <summary>
-        /// 加密结果或解密参数类型
+        /// 输入或输出字符串类型
         /// </summary>
-        public enum Encrypt_RPType
+        public enum InOutParaType
         { 
             /// <summary>
             /// 输入或输出16进制加密字符串
@@ -110,43 +110,41 @@ namespace Easytl.SafeHelper
         /// <summary>
         /// 加密
         /// </summary>
-        public static byte[] Encrypt(Encrypt_Type EncryptType, string EncryptString, string EncryptKey = "", string EncryptIV = "", CipherMode Encrypt_Mode = CipherMode.CBC, PaddingMode Encrypt_Pad = PaddingMode.PKCS7, Encoding Encoding_Mode = null)
+        byte[] Encrypt(Encrypt_Type EncryptType, string EncryptString, string Key = "", string IV = "")
         {
             try
             {
-                if (Encoding_Mode == null)
-                    Encoding_Mode = Encoding.Default;
-
                 SymmetricAlgorithm ect = null;
                 switch (EncryptType)
                 {
                     case Encrypt_Type.DES_Base64:
                         ect = new DESCryptoServiceProvider();
-                        if (string.IsNullOrEmpty(EncryptIV))
-                            EncryptIV = EncryptKey.Substring(0, 8);
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 8);
                         break;
                     case Encrypt_Type.DES3:
                         ect = new TripleDESCryptoServiceProvider();
-                        if (string.IsNullOrEmpty(EncryptIV))
-                            EncryptIV = EncryptKey.Substring(0, 8);
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 8);
+                        ect.BlockSize = BlockSize;
                         break;
                     case Encrypt_Type.AES:
                         ect = new AesCryptoServiceProvider();
-                        if (string.IsNullOrEmpty(EncryptIV))
-                            EncryptIV = EncryptKey.Substring(0, 16);
-                        ect.BlockSize = 128;
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 16);
+                        ect.BlockSize = BlockSize;
                         break;
                     case Encrypt_Type.DES_MD5:
-                        if (!string.IsNullOrEmpty(EncryptKey))
+                        if (!string.IsNullOrEmpty(Key))
                         {
                             ect = new DESCryptoServiceProvider();
-                            if (string.IsNullOrEmpty(EncryptIV))
-                                EncryptIV = EncryptKey;
-                            byte[] inputByteArray = Encoding_Mode.GetBytes(EncryptString);
-                            ect.Key = Encoding_Mode.GetBytes(EncryptKey);
-                            ect.IV = Encoding_Mode.GetBytes(EncryptIV);
-                            ect.Mode = Encrypt_Mode;
-                            ect.Padding = Encrypt_Pad;
+                            if (string.IsNullOrEmpty(IV))
+                                IV = Key;
+                            byte[] inputByteArray = Encode.GetBytes(EncryptString);
+                            ect.Key = Encode.GetBytes(Key);
+                            ect.IV = Encode.GetBytes(IV);
+                            ect.Mode = Mode;
+                            ect.Padding = Padding;
                             MemoryStream ms = new MemoryStream();
                             CryptoStream cs = new CryptoStream(ms, ect.CreateEncryptor(), CryptoStreamMode.Write);
                             cs.Write(inputByteArray, 0, inputByteArray.Length);
@@ -156,70 +154,69 @@ namespace Easytl.SafeHelper
                         else goto default;
                     case Encrypt_Type.RC2:
                         ect = new RC2CryptoServiceProvider();
-                        if (string.IsNullOrEmpty(EncryptIV))
-                        {
-                            EncryptIV = EncryptKey.Substring(0, 8);
-                        }
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 8);
+                        ect.BlockSize = BlockSize;
                         break;
                     case Encrypt_Type.RC4:
-                        if (!string.IsNullOrEmpty(EncryptKey))
+                        if (!string.IsNullOrEmpty(Key))
                         {
                             RC4CryptoServiceProvider rc4 = new RC4CryptoServiceProvider();
-                            rc4.Encode = Encoding_Mode;
-                            return rc4.Encrypt(EncryptString, EncryptKey);
+                            rc4.Encode = Encode; 
+                            return rc4.Encrypt(EncryptString, Key);
                         }
                         else goto default;
                     case Encrypt_Type.RSA:
-                        if (!string.IsNullOrEmpty(EncryptKey))
+                        if (!string.IsNullOrEmpty(Key))
                         {
-                            RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-                            RSA.FromXmlString(EncryptKey);
-                            byte[] dataToEncrypt = Encoding_Mode.GetBytes(EncryptString);
-                            byte[] encryptedData = RSA.Encrypt(dataToEncrypt, true);
+                            RSACryptoServiceProvider RSA = new RSACryptoServiceProvider(dwKeySize);
+                            RSA.FromXmlString(Key);
+                            byte[] dataToEncrypt = Encode.GetBytes(EncryptString);
+                            byte[] encryptedData = RSA.Encrypt(dataToEncrypt, false);
                             return encryptedData;
                         }
                         else goto default;
                     case Encrypt_Type.MD5:
                         MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
-                        return Hash(md5Hasher, EncryptString, Encoding_Mode);
+                        return Hash(md5Hasher, EncryptString);
                     case Encrypt_Type.SHA1:
                         SHA1 sha1Hasher = new SHA1CryptoServiceProvider();
-                        return Hash(sha1Hasher, EncryptString, Encoding_Mode);
+                        return Hash(sha1Hasher, EncryptString);
                     case Encrypt_Type.HMACSHA1:
-                        if (!string.IsNullOrEmpty(EncryptKey))
+                        if (!string.IsNullOrEmpty(Key))
                         {
-                            HMACSHA1 hmacsha1 = new HMACSHA1(Encoding_Mode.GetBytes(EncryptKey));
-                            return Hash(hmacsha1, EncryptString, Encoding_Mode);
+                            HMACSHA1 hmacsha1 = new HMACSHA1(Encode.GetBytes(Key));
+                            return Hash(hmacsha1, EncryptString);
                         }
                         else goto default;
                     default:
                         return null;
                 }
 
-                ect.Key = Encoding_Mode.GetBytes(EncryptKey);
-                ect.IV = Encoding_Mode.GetBytes(EncryptIV);
-                ect.Mode = Encrypt_Mode;
-                ect.Padding = Encrypt_Pad;
+                ect.Key = Encode.GetBytes(Key);
+                ect.IV = Encode.GetBytes(IV);
+                ect.Mode = Mode;
+                ect.Padding = Padding;
                 ICryptoTransform Encrypt = ect.CreateEncryptor();
-                byte[] data = Encoding_Mode.GetBytes(EncryptString);
+                byte[] data = Encode.GetBytes(EncryptString);
                 byte[] result = Encrypt.TransformFinalBlock(data, 0, data.Length);
                 return result;
             }
-            catch { }
+            catch (Exception ex) { if (throwEx) throw ex; }
             return null;
         }
 
         /// <summary>
         /// 加密（输出16进制加密字符串）
         /// </summary>
-        public static string Encrypt(Encrypt_RPType Encrypt_RPType, Encrypt_Type EncryptType, string EncryptString, string EncryptKey = "", string EncryptIV = "", CipherMode Encrypt_Mode = CipherMode.CBC, PaddingMode Encrypt_Pad = PaddingMode.PKCS7, Encoding Encoding_Mode = null)
+        public string Encrypt(InOutParaType Encrypt_RPType, Encrypt_Type EncryptType, string EncryptString, string Key = "", string IV = "")
         {
             switch (Encrypt_RPType)
             {
-                case EncryptionHelper.Encrypt_RPType.Str16:
-                    return BitConverter.ToString(Encrypt(EncryptType, EncryptString, EncryptKey, EncryptIV, Encrypt_Mode, Encrypt_Pad, Encoding_Mode)).Replace("-", string.Empty).ToUpper();
-                case EncryptionHelper.Encrypt_RPType.Base64:
-                    return Convert.ToBase64String(Encrypt(EncryptType, EncryptString, EncryptKey, EncryptIV, Encrypt_Mode, Encrypt_Pad, Encoding_Mode));
+                case EncryptionHelper.InOutParaType.Str16:
+                    return BitConverter.ToString(Encrypt(EncryptType, EncryptString, Key, IV)).Replace("-", string.Empty).ToUpper();
+                case EncryptionHelper.InOutParaType.Base64:
+                    return Convert.ToBase64String(Encrypt(EncryptType, EncryptString, Key, IV));
                 default:
                     return string.Empty;
             }
@@ -229,96 +226,85 @@ namespace Easytl.SafeHelper
         /// <summary>
         /// 解密
         /// </summary>
-        public static string Decrypt(Encrypt_Type DecryptType, byte[] DecryptBytes, string DecryptKey, string DecryptIV = "", CipherMode Encrypt_Mode = CipherMode.CBC, PaddingMode Encrypt_Pad = PaddingMode.PKCS7, Encoding Encoding_Mode = null)
+        string Decrypt(Encrypt_Type DecryptType, byte[] DecryptBytes, string Key, string IV = "")
         {
             try
             {
-                if (Encoding_Mode == null)
-                    Encoding_Mode = Encoding.Default;
-
                 SymmetricAlgorithm ect = null;
                 switch (DecryptType)
                 {
                     case Encrypt_Type.DES_Base64:
                         ect = new DESCryptoServiceProvider();
-                        if (string.IsNullOrEmpty(DecryptIV))
-                        {
-                            DecryptIV = DecryptKey.Substring(0, 8);
-                        }
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 8);
                         break;
                     case Encrypt_Type.DES3:
                         ect = new TripleDESCryptoServiceProvider();
-                        if (string.IsNullOrEmpty(DecryptIV))
-                        {
-                            DecryptIV = DecryptKey.Substring(0, 8);
-                        }
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 8);
+                        ect.BlockSize = BlockSize;
                         break;
                     case Encrypt_Type.AES:
                         ect = new RijndaelManaged();
-                        if (string.IsNullOrEmpty(DecryptIV))
-                        {
-                            DecryptIV = DecryptKey.Substring(0, 16);
-                        }
-                        ect.BlockSize = 128;
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 16);
+                        ect.BlockSize = BlockSize;
                         break;
                     case Encrypt_Type.DES_MD5:
                         ect = new DESCryptoServiceProvider();
-                        if (string.IsNullOrEmpty(DecryptIV))
-                        {
-                            DecryptIV = DecryptKey;
-                        }
-                        ect.Key = Encoding_Mode.GetBytes(DecryptKey);
-                        ect.IV = Encoding_Mode.GetBytes(DecryptIV);
-                        ect.Mode = Encrypt_Mode;
-                        ect.Padding = Encrypt_Pad;
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key;
+                        ect.Key = Encode.GetBytes(Key);
+                        ect.IV = Encode.GetBytes(IV);
+                        ect.Mode = Mode;
+                        ect.Padding = Padding;
                         MemoryStream ms = new MemoryStream();
                         CryptoStream cs = new CryptoStream(ms, ect.CreateDecryptor(), CryptoStreamMode.Write);
                         cs.Write(DecryptBytes, 0, DecryptBytes.Length);
                         cs.FlushFinalBlock();
-                        return Encoding_Mode.GetString(ms.ToArray());
+                        return Encode.GetString(ms.ToArray());
                     case Encrypt_Type.RC2:
                         ect = new RC2CryptoServiceProvider();
-                        if (string.IsNullOrEmpty(DecryptIV))
-                        {
-                            DecryptIV = DecryptKey.Substring(0, 8);
-                        }
+                        if (string.IsNullOrEmpty(IV))
+                            IV = Key.Substring(0, 8);
+                        ect.BlockSize = BlockSize;
                         break;
                     case Encrypt_Type.RC4:
                         RC4CryptoServiceProvider rc4 = new RC4CryptoServiceProvider();
-                        rc4.Encode = Encoding_Mode;
-                        return rc4.Decrypt(DecryptBytes, DecryptKey);
+                        rc4.Encode = Encode;
+                        return rc4.Decrypt(DecryptBytes, Key);
                     case Encrypt_Type.RSA:
                         RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-                        RSA.FromXmlString(DecryptKey);
+                        RSA.FromXmlString(Key);
                         byte[] decryptedData = RSA.Decrypt(DecryptBytes, false);
-                        return Encoding_Mode.GetString(decryptedData);
+                        return Encode.GetString(decryptedData);
                     default:
                         return string.Empty;
                 }
 
-                ect.Key = Encoding_Mode.GetBytes(DecryptKey);
-                ect.IV = Encoding_Mode.GetBytes(DecryptIV);
-                ect.Mode = Encrypt_Mode;
-                ect.Padding = Encrypt_Pad;
+                ect.Key = Encode.GetBytes(Key);
+                ect.IV = Encode.GetBytes(IV);
+                ect.Mode = Mode;
+                ect.Padding = Padding;
                 ICryptoTransform Decrypt = ect.CreateDecryptor();
                 byte[] result = Decrypt.TransformFinalBlock(DecryptBytes, 0, DecryptBytes.Length);
-                return Encoding_Mode.GetString(result);
+                return Encode.GetString(result);
             }
-            catch { }
+            catch (Exception ex) { if (throwEx) throw ex; }
             return null;
         }
 
         /// <summary>
         /// 解密（输入16进制解密字符串）
         /// </summary>
-        public static string Decrypt(Encrypt_RPType Encrypt_RPType, Encrypt_Type DecryptType, string DecryptString, string DecryptKey, string DecryptIV = "", CipherMode Encrypt_Mode = CipherMode.CBC, PaddingMode Encrypt_Pad = PaddingMode.PKCS7, Encoding Encoding_Mode = null)
+        public string Decrypt(InOutParaType Encrypt_RPType, Encrypt_Type DecryptType, string DecryptString, string Key, string IV = "")
         {
             switch (Encrypt_RPType)
             {
-                case EncryptionHelper.Encrypt_RPType.Str16:
-                    return Decrypt(DecryptType, DecryptString.Str16_To_Bytes(), DecryptKey, DecryptIV, Encrypt_Mode, Encrypt_Pad, Encoding_Mode);
-                case EncryptionHelper.Encrypt_RPType.Base64:
-                    return Decrypt(DecryptType, Convert.FromBase64String(DecryptString), DecryptKey, DecryptIV, Encrypt_Mode, Encrypt_Pad, Encoding_Mode);
+                case EncryptionHelper.InOutParaType.Str16:
+                    return Decrypt(DecryptType, DecryptString.Str16_To_Bytes(), Key, IV);
+                case EncryptionHelper.InOutParaType.Base64:
+                    return Decrypt(DecryptType, Convert.FromBase64String(DecryptString), Key, IV);
                 default:
                     return string.Empty;
             }
@@ -327,9 +313,9 @@ namespace Easytl.SafeHelper
         /// <summary>
         /// 哈希算法
         /// </summary>
-        private static byte[] Hash(HashAlgorithm Hasher, string EncryptString, Encoding Encoding_Mode)
+        byte[] Hash(HashAlgorithm Hasher, string EncryptString)
         {
-            return Hasher.ComputeHash(Encoding_Mode.GetBytes(EncryptString));
+            return Hasher.ComputeHash(Encode.GetBytes(EncryptString));
         }
     }
 }
