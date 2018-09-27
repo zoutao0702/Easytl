@@ -82,7 +82,7 @@ namespace Easytl.Web.WebHelper
         }
 
         /// <summary>
-        /// 模拟http请求
+        /// 模拟http请求（raw）
         /// </summary>
         public static string HttpRequest(RequestType requestType, out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, string dataStr = "", NameValueCollection headers = null, string contentType = "text/json", string encodingType = "UTF-8", int timeout = 10000)
         {
@@ -123,7 +123,7 @@ namespace Easytl.Web.WebHelper
 
                 if (!string.IsNullOrEmpty(dataStr))
                 {
-                    byte[] data = System.Text.Encoding.GetEncoding(encodingType).GetBytes(dataStr);
+                    byte[] data = Encoding.GetEncoding(encodingType).GetBytes(dataStr);
                     myRequest.ContentLength = data.Length;
                     Stream newStream = myRequest.GetRequestStream();
 
@@ -142,7 +142,7 @@ namespace Easytl.Web.WebHelper
                 }
                 OpStatusCode = response.StatusCode;
                 OpStatusDescription = response.StatusDescription;
-                using (StreamReader sr = new StreamReader(response.GetResponseStream(), System.Text.Encoding.GetEncoding(encodingType)))
+                using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingType)))
                 {
                     string result = sr.ReadToEnd();
                     sr.Close();
@@ -160,7 +160,7 @@ namespace Easytl.Web.WebHelper
 
 
         /// <summary>
-        /// 模拟http/post请求
+        /// 模拟http/post请求（application/x-www-form-urlencoded）
         /// </summary>
         public static string HttpRequest_Post(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, NameValueCollection values, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000)
         {
@@ -181,9 +181,9 @@ namespace Easytl.Web.WebHelper
 
 
         /// <summary>
-        /// 模拟http/post请求(multipart/form-data)（包含文件上传）
+        /// 模拟http/post请求（multipart/form-data）
         /// </summary>
-        public static string HttpRequest_PostFile(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, NameValueCollection values, List<PostUploadFile> files, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000, string boundary = null)
+        public static string HttpRequest_Post_FormData(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, NameValueCollection values, List<PostUploadFile> files, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000, string boundary = null)
         {
             string result;
             try
@@ -272,7 +272,7 @@ namespace Easytl.Web.WebHelper
 
 
         /// <summary>
-        /// 模拟http/post请求
+        /// 模拟http/post请求（application/x-www-form-urlencoded）
         /// </summary>
         public static string HttpRequest_Post_T<T>(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, T values, BindingFlags bindingAttr = BindingFlags.Public, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000)
         {

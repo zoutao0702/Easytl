@@ -8,7 +8,6 @@ D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\System.Web.WebPages.dll
 D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\Microsoft.Web.Infrastructure.dll
 D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\System.Web.WebPages.Deployment.dll
 D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\Easytl.pdb
-D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\Easytl.xml
 D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\System.Web.Mvc.xml
 D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\System.Web.Razor.xml
 D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\System.Web.WebPages.Razor.xml

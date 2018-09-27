@@ -6,7 +6,6 @@ D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.WF.pdb
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.dll
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\System.Net.Http.dll
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.pdb
-D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.xml
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\System.Net.Http.xml
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\zh-Hans\System.Net.Http.resources.dll
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.dll
