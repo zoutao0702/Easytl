@@ -320,7 +320,7 @@ namespace Easytl.Web.WebHelper
                 {
                     if (CreateDateFolder)
                         DirectoryVirtualPath += @"/" + DateTime.Today.ToString("yyyy-MM");
-                    Easytl.Web.FileHelper.FolderHelper.CreateFolder(Request.MapPath(DirectoryVirtualPath));
+                    FileHelper.FolderHelper.CreateFolder(Request.MapPath(DirectoryVirtualPath));
 
                     foreach (string FileKey in Request.Files.Keys)
                     {
@@ -380,7 +380,7 @@ namespace Easytl.Web.WebHelper
                         else
                             FileSaveUrl = "/" + FileSaveUrl;
                     }
-                    FileSaveUrl = "http://" + System.Web.HttpContext.Current.Request.Url.Authority + FileSaveUrl;
+                    FileSaveUrl = "http://" + HttpContext.Current.Request.Url.Authority + FileSaveUrl;
                 }
                 return true;
             }
@@ -406,11 +406,11 @@ namespace Easytl.Web.WebHelper
             FileSaveUrl = string.Empty;
             if (!string.IsNullOrEmpty(DirectoryVirtualPath))
             {
-                System.Net.WebClient myWebClient = new System.Net.WebClient();
+                WebClient myWebClient = new WebClient();
 
                 if (CreateDateFolder)
                     DirectoryVirtualPath += @"/" + DateTime.Today.ToString("yyyy-MM");
-                Easytl.Web.FileHelper.FolderHelper.CreateFolder(Request.MapPath(DirectoryVirtualPath));
+                FileHelper.FolderHelper.CreateFolder(Request.MapPath(DirectoryVirtualPath));
 
                 string FileUrl = DirectoryVirtualPath + "/" + FileName + "-1" + ((AddTime) ? DateTime.Now.ToString("yyyyMMddHHmmss") : string.Empty) + ((string.IsNullOrEmpty(FileType)) ? string.Empty : "." + FileType);
                 myWebClient.DownloadFile(Url, Request.MapPath(FileUrl));
@@ -425,7 +425,7 @@ namespace Easytl.Web.WebHelper
                         else
                             FileSaveUrl = "/" + FileSaveUrl;
                     }
-                    FileSaveUrl = "http://" + System.Web.HttpContext.Current.Request.Url.Authority + FileSaveUrl;
+                    FileSaveUrl = "http://" + HttpContext.Current.Request.Url.Authority + FileSaveUrl;
                 }
 
                 return true;

@@ -74,7 +74,7 @@ namespace Easytl.SafeHelper
             /// </summary>
             RC4,
             /// <summary>
-            /// 【非对称算法】RAS加密
+            /// 【非对称算法】RSA加密
             /// </summary>
             RSA,
             /// <summary>

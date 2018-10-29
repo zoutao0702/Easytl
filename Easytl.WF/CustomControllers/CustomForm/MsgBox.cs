@@ -27,16 +27,16 @@ namespace Easytl.WF.CustomControllers.CustomForm
                     this.Picture_ShowIcon.Image = null;
                     break;
                 case 16:
-                    this.Picture_ShowIcon.Image = System.Drawing.SystemIcons.Error.ToBitmap();
+                    this.Picture_ShowIcon.Image = SystemIcons.Error.ToBitmap();
                     break;
                 case 32:
-                    this.Picture_ShowIcon.Image = System.Drawing.SystemIcons.Question.ToBitmap();
+                    this.Picture_ShowIcon.Image = SystemIcons.Question.ToBitmap();
                     break;
                 case 48:
-                    this.Picture_ShowIcon.Image = System.Drawing.SystemIcons.Exclamation.ToBitmap();
+                    this.Picture_ShowIcon.Image = SystemIcons.Exclamation.ToBitmap();
                     break;
                 case 64:
-                    this.Picture_ShowIcon.Image = System.Drawing.SystemIcons.Asterisk.ToBitmap();
+                    this.Picture_ShowIcon.Image = SystemIcons.Asterisk.ToBitmap();
                     break;
             }
             CloseFormTime = CloseTime;

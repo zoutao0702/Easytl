@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
@@ -23,9 +21,16 @@ namespace Easytl.CommunicationHelper
         {
             get
             {
-                return TCP_Client.Connected;
+                if (TCP_Client != null)
+                    return TCP_Client.Connected;
+                return false;
             }
         }
+
+        /// <summary>
+        /// 连接超时时长（秒）
+        /// </summary>
+        public int ConnectTimeOut { get; set; } = 10;
 
         #endregion
 
@@ -34,12 +39,12 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 协议头
         /// </summary>
-        public virtual string Command_Head { private get; set; }
+        public virtual string Command_Head { get; }
 
         /// <summary>
-        /// 协议最小长度
+        /// 协议最短字节数
         /// </summary>
-        public virtual int Command_MinLen { get; set; }
+        public virtual int Command_MinByteCount { get; } = 0;
 
         #endregion
 
@@ -92,9 +97,8 @@ namespace Easytl.CommunicationHelper
         {
             TCP_Client = new TcpClient();
 
-            ManualResetEvent timeout = new ManualResetEvent(true);
-            timeout.Reset();
-
+            Semaphore s = new Semaphore(0, 1);
+            Exception ex = null;
             TCP_Client.BeginConnect(remoteep.Address, remoteep.Port, new AsyncCallback((IAsyncResult ar) =>
             {
                 TcpClient client = (TcpClient)ar.AsyncState;
@@ -108,13 +112,20 @@ namespace Easytl.CommunicationHelper
                 }
                 catch (Exception e)
                 {
-                    throw e;
+                    ex = e;
                 }
                 finally
                 {
-                    timeout.Set();
+                    s.Release();
                 }
             }), TCP_Client);
+            if (!s.WaitOne(ConnectTimeOut * 1000))
+                ex = new Exception("连接超时");
+            s.Close();
+            s.Dispose();
+
+            if (ex != null)
+                throw ex;
         }
 
         /// <summary>
@@ -135,14 +146,14 @@ namespace Easytl.CommunicationHelper
                         if (TCP_Client.Available > 0)
                         {
                             bs = new byte[TCP_Client.Available];
-                            TCP_Client.Client.Receive(bs);
+                            TCP_Client.GetStream().Read(bs, 0, bs.Length);
                             ReciveMessage.Append(BitConverter.ToString(bs).ToUpper().Trim().Replace("-", string.Empty));
 
                             Command = ReciveMessage.ToString();
                             ReciveMessage.Remove(0, AnalyCommand(ref Command));
 
                             if (!string.IsNullOrEmpty(Command))
-                                Data_Recive_Event?.Invoke(Command, (IPEndPoint)TCP_Client.Client.LocalEndPoint, (IPEndPoint)TCP_Client.Client.RemoteEndPoint);
+                                Task.Run(()=> { Data_Recive_Event?.Invoke(Command, (IPEndPoint)TCP_Client.Client.LocalEndPoint, (IPEndPoint)TCP_Client.Client.RemoteEndPoint); });
                         }
                     }
                     else
@@ -159,27 +170,27 @@ namespace Easytl.CommunicationHelper
         }
 
         /// <summary>
-        /// 获取协议内容长度（若重写了AnalyCommand方法，则该方法无效）
+        /// 获取协议内容字节数（若重写了AnalyCommand方法，则该方法无效）
         /// </summary>
         /// <param name="Command_Min">最小长度的协议</param>
         /// <returns>返回协议内容长度</returns>
-        public abstract int Body_Len(string Command_Min);
+        public abstract int Body_ByteCount(string Command_Min);
 
         /// <summary>
         /// 分析接收到的协议数据，并把它转为正确的一条协议输出，返回应清除的协议数据长度
         /// </summary>
         public virtual int AnalyCommand(ref string Command)
         {
-            int Command_SIndex = 0, Command_BodySize = 0;
-            if (Command_MinLen > 0)
+            int Command_SIndex = 0, Command_BodyByteCount = 0;
+            if (Command_MinByteCount > 0)
             {
                 if (!string.IsNullOrEmpty(Command_Head))
                     Command_SIndex = Command.IndexOf(Command_Head);
-                if (Command.Length >= Command_SIndex + Command_MinLen)
+                if (Command.Length >= Command_SIndex + (Command_MinByteCount * 2))
                 {
-                    Command_BodySize = Body_Len(Command.Substring(Command_SIndex, Command_MinLen));
-                    if (Command.Length >= Command_SIndex + Command_MinLen + Command_BodySize)
-                        Command = Command.Substring(Command_SIndex, Command_MinLen + Command_BodySize);
+                    Command_BodyByteCount = Body_ByteCount(Command.Substring(Command_SIndex, Command_MinByteCount * 2));
+                    if (Command.Length >= Command_SIndex + (Command_MinByteCount * 2) + (Command_BodyByteCount * 2))
+                        Command = Command.Substring(Command_SIndex, (Command_MinByteCount * 2) + (Command_BodyByteCount * 2));
                     else
                         Command = string.Empty;
                 }
@@ -220,10 +231,8 @@ namespace Easytl.CommunicationHelper
                     bs[i] = Convert.ToByte(Data.Substring(i * 2, 2), 16);
                 }
 
-                if (TCP_Client.Client.Send(bs, 0, bs.Length, SocketFlags.None) > 0)
-                    Thread.Sleep(10);
-                else
-                    throw new Exception("发送失败");
+                TCP_Client.GetStream().Write(bs, 0, bs.Length);
+                Thread.Sleep(10);
             }
             catch (Exception e)
             {
@@ -233,7 +242,7 @@ namespace Easytl.CommunicationHelper
 
 
         /// <summary>
-        /// 关闭所有连接并释放内存
+        /// 关闭所有连接
         /// </summary>
         public void Close()
         {

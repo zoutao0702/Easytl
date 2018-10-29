@@ -1,13 +1,9 @@
-D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.csprojResolveAssemblyReference.cache
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.csproj.GenerateResource.Cache
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.Properties.Resources.resources
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.WF.dll
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.WF.pdb
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.dll
-D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\System.Net.Http.dll
 D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.pdb
-D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\System.Net.Http.xml
-D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\zh-Hans\System.Net.Http.resources.dll
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.dll
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.pdb
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomController.My_ComboBox.resources
@@ -17,3 +13,7 @@ D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.IPTextBox.resources
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.MsgBox.resources
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.PhotoBox.resources
+D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.xml
+D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.MonthCalendar.resources
+D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.WeekCalendar.resources
+D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.csprojResolveAssemblyReference.cache

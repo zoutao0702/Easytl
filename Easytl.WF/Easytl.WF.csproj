@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Easytl.WF</RootNamespace>
     <AssemblyName>Easytl.WF</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Easytl">
@@ -85,6 +87,12 @@
     <Compile Include="CustomControllers\CustomForm\IPTextBox.Designer.cs">
       <DependentUpon>IPTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="CustomControllers\CustomForm\MonthCalendar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomControllers\CustomForm\MonthCalendar.Designer.cs">
+      <DependentUpon>MonthCalendar.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomControllers\CustomForm\MsgBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +104,12 @@
     </Compile>
     <Compile Include="CustomControllers\CustomForm\PhotoBox.Designer.cs">
       <DependentUpon>PhotoBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControllers\CustomForm\WeekCalendar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomControllers\CustomForm\WeekCalendar.Designer.cs">
+      <DependentUpon>WeekCalendar.cs</DependentUpon>
     </Compile>
     <Compile Include="FileHelper\FolderHelper.cs" />
     <Compile Include="FileHelper\IniHelper.cs" />
@@ -128,12 +142,18 @@
       <DependentUpon>IPTextBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomControllers\CustomForm\MonthCalendar.resx">
+      <DependentUpon>MonthCalendar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomControllers\CustomForm\MsgBox.resx">
       <DependentUpon>MsgBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CustomControllers\CustomForm\PhotoBox.resx">
       <DependentUpon>PhotoBox.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomControllers\CustomForm\WeekCalendar.resx">
+      <DependentUpon>WeekCalendar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

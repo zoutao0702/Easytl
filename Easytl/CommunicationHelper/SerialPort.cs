@@ -81,11 +81,11 @@ namespace Easytl.CommunicationHelper
 
         #endregion
 
-        #region 接收数据发生异常时触发事件
+        #region 发生异常时触发事件
 
-        public delegate void Data_ReciveException_Delegate(Exception e);
+        public delegate void Exception_Delegate(Exception e);
 
-        public event Data_ReciveException_Delegate Data_ReciveException_Event;
+        public event Exception_Delegate Exception_Event;
 
         #endregion
 
@@ -160,7 +160,7 @@ namespace Easytl.CommunicationHelper
             }
             catch (Exception e)
             {
-                throw e;
+                Exception_Event?.Invoke(e);
             }
         }
 
@@ -175,13 +175,9 @@ namespace Easytl.CommunicationHelper
                 Thread.Sleep(500);
                 if (ReConnection)
                 {
-                    try
-                    {
-                        Open();
-                        if (_SerialPort.IsOpen)
-                            break;
-                    }
-                    catch { }
+                    Open();
+                    if (_SerialPort.IsOpen)
+                        break;
                 }
                 else
                     break;
@@ -227,7 +223,7 @@ namespace Easytl.CommunicationHelper
                 }
                 catch (Exception e)
                 {
-                    Data_ReciveException_Event?.Invoke(e);
+                    Exception_Event?.Invoke(e);
                 }
             }
         }
