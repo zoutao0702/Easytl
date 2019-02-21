@@ -8,6 +8,21 @@ namespace Easytl.WF.CustomControllers.CustomForm
 {
     public partial class WeekCalendar : UserControl
     {
+        #region 公共属性
+
+        /// <summary>
+        /// 只读
+        /// </summary>
+        public bool ReadOnly { get; set; } = false;
+
+        #endregion
+
+        #region 事件
+
+        public event EventHandler ValueChanged;
+
+        #endregion
+
         [Browsable(false)]
         public List<DayOfWeek> WeekList { get; private set; } = new List<DayOfWeek>();
 
@@ -36,56 +51,86 @@ namespace Easytl.WF.CustomControllers.CustomForm
 
                 this.Controls.Add(week);
             }
-
-            //DayOfWeek DayOfWeekI = DayOfWeek.Sunday;
-            //for (int i = 1; i <= 7; i++)
-            //{
-            //    if (i < 7)
-            //        DayOfWeekI = (DayOfWeek)i;
-            //    else
-            //        DayOfWeekI = DayOfWeek.Sunday;
-
-                
-            //}
         }
 
         void week_Click(object sender, EventArgs e)
         {
-            Label lb = sender as Label;
-            int WeekI = Convert.ToInt32(lb.Name.Replace("Week", string.Empty));
-            CheckWeek((DayOfWeek)WeekI);
+            if (!ReadOnly)
+            {
+                Label lb = sender as Label;
+                int WeekI = Convert.ToInt32(lb.Name.Replace("Week", string.Empty));
+                CheckWeek((DayOfWeek)WeekI, !GetState((DayOfWeek)WeekI));
+            }
         }
 
-        /// <summary>
-        /// 选中星期
-        /// </summary>
-        public void CheckWeek(DayOfWeek WeekI)
+        public bool GetState(DayOfWeek WeekI)
         {
             Label lb = this.Controls["Week" + Convert.ToInt32(WeekI).ToString()] as Label;
             if (lb.BorderStyle == BorderStyle.None)
-            {
-                lb.BorderStyle = BorderStyle.FixedSingle;
-                lb.BackColor = Color.FromArgb(216, 233, 255);
-
-                WeekList.Add(WeekI);
-            }
+                return false;
             else
-            {
-                lb.BorderStyle = BorderStyle.None;
-                lb.BackColor = lb.Parent.BackColor;
+                return true;
+        }
 
-                WeekList.Remove(WeekI);
+        /// <summary>
+        /// 选中星期
+        /// </summary>
+        public void CheckWeek(DayOfWeek WeekI, bool Check)
+        {
+            if (!ReadOnly)
+            {
+                Label lb = this.Controls["Week" + Convert.ToInt32(WeekI).ToString()] as Label;
+                bool State = GetState(WeekI);
+                if (Check)
+                {
+                    if (!State)
+                    {
+                        lb.BorderStyle = BorderStyle.FixedSingle;
+                        lb.BackColor = Color.FromArgb(216, 233, 255);
+
+                        WeekList.Add(WeekI);
+                    }
+                }
+                else
+                {
+                    if (State)
+                    {
+                        lb.BorderStyle = BorderStyle.None;
+                        lb.BackColor = lb.Parent.BackColor;
+
+                        WeekList.Remove(WeekI);
+                    }
+                }
+
+                ValueChanged?.Invoke(this, new EventArgs());
             }
         }
 
         /// <summary>
         /// 选中星期
         /// </summary>
-        public void CheckWeek(DayOfWeek[] Weeks)
+        public void CheckWeek(DayOfWeek[] Weeks, bool Check)
         {
             foreach (DayOfWeek item in Weeks)
             {
-                CheckWeek(item);
+                CheckWeek(item, Check);
+            }
+        }
+
+        /// <summary>
+        /// 清除所有选中星期
+        /// </summary>
+        public void Clear()
+        {
+            if (!ReadOnly)
+            {
+                DayOfWeek[] weeks = new DayOfWeek[WeekList.Count];
+                WeekList.CopyTo(weeks);
+                foreach (var item in weeks)
+                {
+                    CheckWeek(item, false);
+                }
+                WeekList.Clear();
             }
         }
     }

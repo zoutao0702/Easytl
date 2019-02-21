@@ -13,7 +13,6 @@ D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.IPTextBox.resources
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.MsgBox.resources
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.PhotoBox.resources
-D:\Code\Easytl\Easytl\Easytl.WF\bin\Debug\Easytl.xml
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.MonthCalendar.resources
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.CustomControllers.CustomForm.WeekCalendar.resources
 D:\Code\Easytl\Easytl\Easytl.WF\obj\Debug\Easytl.WF.csprojResolveAssemblyReference.cache

@@ -201,9 +201,8 @@ namespace Easytl.Web.WebHelper
                 httpWebRequest.Timeout = timeout;
                 httpWebRequest.ReadWriteTimeout = timeout;
                 if (string.IsNullOrEmpty(boundary))
-                {
                     boundary = "---------------" + DateTime.Now.Ticks.ToString("x");
-                }
+
                 string Enter = "\r\n";
                 httpWebRequest.ContentType = "multipart/form-data;charset=" + encoding.WebName + ";boundary=" + boundary;
                 Stream requestStream = httpWebRequest.GetRequestStream();
@@ -229,9 +228,8 @@ namespace Easytl.Web.WebHelper
                         + "Content-Disposition: form-data; name=\"" + file.FieldName + "\"; filename=\"" + file.FileName + "\"" + Enter;
 
                     if (!string.IsNullOrEmpty(file.ContentType))
-                    {
                         Str += "Content-Type:" + file.ContentType + Enter;
-                    }
+                    
                     Str += Enter;
                     bytes = encoding.GetBytes(Str);
                     requestStream.Write(bytes, 0, bytes.Length);

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Linq;
+using System.IO;
+using System.Diagnostics;
 
 namespace Easytl
 {
@@ -867,6 +869,100 @@ namespace Easytl
 
             if (Refresh)
                 System.Configuration.ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        /// <summary>
+        /// 创建文件夹
+        /// </summary>
+        /// <param name="DirectoryPath">文件夹路径</param>
+        public static void CreateFolder(string DirectoryPath)
+        {
+            string[] FolderNames = DirectoryPath.Split('\\');
+            if (FolderNames.Length > 0)
+            {
+                string FolderUrl = string.Empty;
+                for (int i = 0; i < FolderNames.Length; i++)
+                {
+                    FolderUrl += FolderNames[i];
+                    if (!FolderNames[i].Contains(':'))
+                    {
+                        if (!Directory.Exists(FolderUrl))
+                            Directory.CreateDirectory(FolderUrl);
+                    }
+
+                    if (i < FolderNames.Length - 1)
+                        FolderUrl += @"\";
+                }
+            }
+
+            DirectoryInfo FolderDirectory = new DirectoryInfo(DirectoryPath);
+            FolderDirectory.Refresh();
+        }
+
+        /// <summary>
+        /// 异或
+        /// </summary>
+        public static string XOR(this string data16)
+        {
+            byte[] data = data16.Str16_To_Bytes();
+            byte startb = data[0];
+            for (int i = 1; i < data.Length; i++)
+            {
+                startb ^= data[i];
+            }
+            return Convert.ToString(startb, 16).Str_Add0_Before(2);
+        }
+
+        /// <summary>
+        /// CRC16校验
+        /// </summary>
+        public static string CRC16(this string data16, ushort crcResult = 0x0000, ushort crcExpress = 0x1021)
+        {
+            byte[] data = data16.Str16_To_Bytes();
+            foreach (byte value in data)
+            {
+                for (int n = 0; n < 8; n++)
+                {
+                    if ((crcResult & 0x8000) != 0)
+                    {
+                        crcResult <<= 1;
+                        crcResult ^= crcExpress;
+                    }
+                    else
+                        crcResult <<= 1;
+
+                    if ((value & (1 << (7 - n))) != 0)
+                        crcResult ^= crcExpress;
+                }
+            }
+            return Convert.ToString(crcResult, 16).StrReverse(2);
+        }
+
+        /// <summary>
+        /// 运行CMD程序
+        /// </summary>
+        public static string RunCmd(string Cmd, out string Error, string exe = null, string Arguments = null)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = (string.IsNullOrEmpty(exe)) ? "cmd.exe" : exe;   // 设置要启动的应用程序
+            if (!string.IsNullOrEmpty(Arguments))
+                p.StartInfo.Arguments = Arguments;
+            p.StartInfo.UseShellExecute = false;    // 是否使用操作系统shell启动
+            p.StartInfo.RedirectStandardInput = true;   // 接受来自调用程序的输入信息
+            p.StartInfo.RedirectStandardOutput = true;  // 输出信息
+            p.StartInfo.RedirectStandardError = true;   // 输出错误
+            p.StartInfo.CreateNoWindow = true;  // 不显示程序窗口
+            p.Start();  // 启动程序
+
+            p.StandardInput.WriteLine(Cmd);  // 向cmd窗口发送输入信息
+            p.StandardInput.WriteLine("exit");
+            string strOuput = p.StandardOutput.ReadToEnd(); // 获取输出信息
+            Error = p.StandardError.ReadToEnd();
+
+            p.WaitForExit();    // 等待程序执行完退出进程
+            p.Close();
+
+            return strOuput;
         }
     }
 }

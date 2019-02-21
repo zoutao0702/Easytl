@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Easytl.WF
 {
@@ -10,31 +11,10 @@ namespace Easytl.WF
     /// </summary>
     public static class THelper
     {
-        ///// <summary>
-        ///// 获取本地IPv4地址
-        ///// </summary>
-        ///// <returns></returns>
-        //public static string GetHostIPv4()
-        //{
-        //    System.Net.IPAddress[] IPs = System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName());
-        //    foreach (var item in IPs)
-        //    {
-        //        if (System.Text.RegularExpressions.Regex.IsMatch(item.ToString(), "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\."
-        //                                                                        + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-        //                                                                        + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\."
-        //                                                                        + "(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$"))
-        //        {
-        //            return item.ToString();
-        //        }
-        //    }
-
-        //    return string.Empty;
-        //}
-
         /// <summary>
         /// 向用户显示控件
         /// </summary>
-        public static void Show(this System.Windows.Forms.Form MyForm, System.Windows.Forms.IWin32Window Owner = null)
+        public static void Show(this Form MyForm, IWin32Window Owner = null)
         {
             if (MyForm.Visible)
                 MyForm.Focus();
@@ -45,6 +25,17 @@ namespace Easytl.WF
                 else
                     MyForm.Show(Owner);
             }
+        }
+
+        /// <summary>
+        /// 执行方法
+        /// </summary>
+        public static void InvokeT(this Form MyForm, Action action)
+        {
+            if (MyForm.InvokeRequired)
+                MyForm.Invoke(action);
+            else
+                action.Invoke();
         }
     }
 }

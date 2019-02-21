@@ -8,6 +8,21 @@ namespace Easytl.WF.CustomControllers.CustomForm
 {
     public partial class MonthCalendar : UserControl
     {
+        #region 公共属性
+
+        /// <summary>
+        /// 只读
+        /// </summary>
+        public bool ReadOnly { get; set; } = false;
+
+        #endregion
+
+        #region 事件
+
+        public event EventHandler ValueChanged;
+
+        #endregion
+
         [Browsable(false)]
         public List<int> MonthList { get; private set; } = new List<int>();
 
@@ -40,33 +55,57 @@ namespace Easytl.WF.CustomControllers.CustomForm
 
         void month_Click(object sender, EventArgs e)
         {
-            Label lb = sender as Label;
-            int Day = Convert.ToInt32(lb.Name.Replace("Month", string.Empty));
-            CheckDay(Day);
+            if (!ReadOnly)
+            {
+                Label lb = sender as Label;
+                int Day = Convert.ToInt32(lb.Name.Replace("Month", string.Empty));
+                CheckDay(Day, !GetState(Day));
+            }
+        }
+
+        public bool GetState(int Day)
+        {
+            Label lb = this.Controls["Month" + Day.ToString()] as Label;
+            if (lb.BorderStyle == BorderStyle.None)
+                return false;
+            else
+                return true;
         }
 
         /// <summary>
         /// 选中日期
         /// </summary>
-        public void CheckDay(int Day)
+        public void CheckDay(int Day, bool Check)
         {
-            string lbname = "Month" + Day.ToString();
-            if (this.Controls.ContainsKey(lbname))
+            if (!ReadOnly)
             {
-                Label lb = this.Controls[lbname] as Label;
-                if (lb.BorderStyle == BorderStyle.None)
+                string lbname = "Month" + Day.ToString();
+                if (this.Controls.ContainsKey(lbname))
                 {
-                    lb.BorderStyle = BorderStyle.FixedSingle;
-                    lb.BackColor = Color.FromArgb(216, 233, 255);
+                    Label lb = this.Controls[lbname] as Label;
+                    bool State = GetState(Day);
+                    if (Check)
+                    {
+                        if (!State)
+                        {
+                            lb.BorderStyle = BorderStyle.FixedSingle;
+                            lb.BackColor = Color.FromArgb(216, 233, 255);
 
-                    MonthList.Add(Day);
-                }
-                else
-                {
-                    lb.BorderStyle = BorderStyle.None;
-                    lb.BackColor = lb.Parent.BackColor;
+                            MonthList.Add(Day);
+                        }
+                    }
+                    else
+                    {
+                        if (State)
+                        {
+                            lb.BorderStyle = BorderStyle.None;
+                            lb.BackColor = lb.Parent.BackColor;
 
-                    MonthList.Remove(Day);
+                            MonthList.Remove(Day);
+                        }
+                    }
+
+                    ValueChanged?.Invoke(this, new EventArgs());
                 }
             }
         }
@@ -74,11 +113,28 @@ namespace Easytl.WF.CustomControllers.CustomForm
         /// <summary>
         /// 选中日期
         /// </summary>
-        public void CheckDay(int[] Days)
+        public void CheckDay(int[] Days, bool Check)
         {
             foreach (int item in Days)
             {
-                CheckDay(item);
+                CheckDay(item, Check);
+            }
+        }
+
+        /// <summary>
+        /// 清除所有选中日期
+        /// </summary>
+        public void Clear()
+        {
+            if (!ReadOnly)
+            {
+                int[] months = new int[MonthList.Count];
+                MonthList.CopyTo(months);
+                foreach (var item in months)
+                {
+                    CheckDay(item, false);
+                }
+                MonthList.Clear();
             }
         }
     }

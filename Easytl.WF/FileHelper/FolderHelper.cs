@@ -14,38 +14,6 @@ namespace Easytl.WF.FileHelper
     public class FolderHelper
     {
         /// <summary>
-        /// 创建文件夹
-        /// </summary>
-        /// <param name="DirectoryPath">文件夹路径</param>
-        public static void CreateFolder(string DirectoryPath)
-        {
-            string[] FolderNames = DirectoryPath.Split('\\');
-            if (FolderNames.Length > 0)
-            {
-                string FolderUrl = string.Empty;
-                for (int i = 0; i < FolderNames.Length; i++)
-                {
-                    FolderUrl += FolderNames[i];
-                    if (!FolderNames[i].Contains(':'))
-                    {
-                        if (!Directory.Exists(FolderUrl))
-                        {
-                            Directory.CreateDirectory(FolderUrl);
-                        }
-                    }
-
-                    if (i < FolderNames.Length - 1)
-                    {
-                        FolderUrl += @"\";
-                    }
-                }
-            }
-
-            DirectoryInfo FolderDirectory = new DirectoryInfo(DirectoryPath);
-            FolderDirectory.Refresh();
-        }
-
-        /// <summary>
         /// 设置文件夹共享
         /// </summary>
         /// <param name="FolderPath">文件夹路径</param>
@@ -59,7 +27,7 @@ namespace Easytl.WF.FileHelper
                 //创建文件夹
                 if (!Directory.Exists(FolderPath))
                 {
-                    CreateFolder(FolderPath);
+                    Easytl.THelper.CreateFolder(FolderPath);
                 }
 
                 //设置文件夹共享

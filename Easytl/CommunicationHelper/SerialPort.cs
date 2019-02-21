@@ -75,33 +75,37 @@ namespace Easytl.CommunicationHelper
 
         #region 接收到数据时触发事件
 
-        public delegate void Data_Recive_Delegate(string Recive_Data, int COM_Id);
-
-        public event Data_Recive_Delegate Data_Recive_Event;
+        /// <summary>
+        /// 接收到数据时触发事件
+        /// </summary>
+        public event Action<string, int> Data_Recive_Event;
 
         #endregion
 
         #region 发生异常时触发事件
 
-        public delegate void Exception_Delegate(Exception e);
-
-        public event Exception_Delegate Exception_Event;
+        /// <summary>
+        /// 发生异常时触发事件
+        /// </summary>
+        public event Action<Exception> Exception_Event;
 
         #endregion
 
         #region 串口打开时触发事件
 
-        public delegate void Open_Delegate();
-
-        public event Open_Delegate Open_Event;
+        /// <summary>
+        /// 串口打开时触发事件
+        /// </summary>
+        public event Action Open_Event;
 
         #endregion
 
         #region 串口关闭时触发事件
 
-        public delegate void Close_Delegate();
-
-        public event Close_Delegate Close_Event;
+        /// <summary>
+        /// 串口关闭时触发事件
+        /// </summary>
+        public event Action Close_Event;
 
         #endregion
 
