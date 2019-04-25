@@ -78,9 +78,13 @@ namespace Easytl.SafeHelper
             /// </summary>
             RSA,
             /// <summary>
-            /// 【散列算法】MD5加密(输出为16进制字符串)
+            /// 【散列算法】MD5, 32位加密(输出为32位16进制字符串)
             /// </summary>
             MD5,
+            /// <summary>
+            /// 【散列算法】MD5, 16位加密(输出为16位16进制字符串)
+            /// </summary>
+            MD5_16,
             /// <summary>
             /// 【散列算法】SHA1加密(输出为16进制字符串)
             /// </summary>
@@ -179,6 +183,11 @@ namespace Easytl.SafeHelper
                     case Encrypt_Type.MD5:
                         MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
                         return Hash(md5Hasher, EncryptString);
+                    case Encrypt_Type.MD5_16:
+                        md5Hasher = new MD5CryptoServiceProvider();
+                        byte[] bs = new byte[8];
+                        Array.Copy(Hash(md5Hasher, EncryptString), 4, bs, 0, 8);
+                        return bs;
                     case Encrypt_Type.SHA1:
                         SHA1 sha1Hasher = new SHA1CryptoServiceProvider();
                         return Hash(sha1Hasher, EncryptString);

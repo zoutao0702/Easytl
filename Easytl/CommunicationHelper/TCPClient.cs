@@ -41,12 +41,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 协议头
         /// </summary>
-        public virtual string Command_Head { get; }
-
-        /// <summary>
-        /// 协议最短字节数
-        /// </summary>
-        public virtual int Command_MinByteCount { get; }
+        public virtual string CommandHead { get; set; } = string.Empty;
 
         #endregion
 
@@ -78,16 +73,19 @@ namespace Easytl.CommunicationHelper
                 AsyncUserToken token = sender as AsyncUserToken;
                 token.CommandString.Append(BitConverter.ToString(e.Data).ToUpper().Trim().Replace("-", string.Empty));
 
-                string Command = token.CommandString.ToString();
-                token.CommandString.Remove(0, CommandHepler.AnalyCommand(Command_MinByteCount, Command_Head, Body_ByteCount, ref Command));
-
-                if (!string.IsNullOrEmpty(Command) && (ReciveCommand != null))
+                string Command;
+                do
                 {
-                    foreach (EventHandler<ReciveCommandEventArgs> deleg in ReciveCommand.GetInvocationList())
+                    Command = CommandHepler.AnalyCommand(CommandHead, GetCommandLength, ref token.CommandString);
+
+                    if (!string.IsNullOrEmpty(Command) && (ReciveCommand != null))
                     {
-                        deleg.BeginInvoke(sender, new ReciveCommandEventArgs() { Command = Command }, null, null);
+                        foreach (EventHandler<ReciveCommandEventArgs> deleg in ReciveCommand.GetInvocationList())
+                        {
+                            deleg.BeginInvoke(sender, new ReciveCommandEventArgs() { Command = Command }, null, null);
+                        }
                     }
-                }
+                } while (!string.IsNullOrEmpty(Command));
             }
             catch (Exception ex)
             {
@@ -102,11 +100,11 @@ namespace Easytl.CommunicationHelper
         }
 
         /// <summary>
-        /// 获取协议内容字节数
+        /// 获取协议长度
         /// </summary>
-        /// <param name="Command_Min">最小长度的协议</param>
-        /// <returns>返回协议内容长度</returns>
-        public abstract int Body_ByteCount(string Command_Min);
+        /// <param name="Command">协议</param>
+        /// <returns>返回协议长度</returns>
+        public abstract int GetCommandLength(string Command);
 
         /// <summary>
         /// 发送数据
@@ -216,16 +214,15 @@ namespace Easytl.CommunicationHelper
             IP = ip;
             Port = port;
 
-            m_totalBytesRead = 0;
-            m_receiveBufferSize = receiveBufferSize;
-            // allocate buffers such that the maximum number of sockets can have one outstanding read and 
-            //write posted to the socket simultaneously  
-            m_bufferManager = new BufferManager(receiveBufferSize * opsToPreAlloc,
-                receiveBufferSize);
+            Init(receiveBufferSize);
+        }
 
-            Init();
-
-            ReciveData += reciveCommand;
+        /// <summary>
+        /// 实例化
+        /// </summary>
+        public TCPClient(int receiveBufferSize = 1024)
+        {
+            Init(receiveBufferSize);
         }
 
         // Initializes the server by preallocating reusable buffers and 
@@ -233,8 +230,15 @@ namespace Easytl.CommunicationHelper
         // or reused, but it is done this way to illustrate how the API can 
         // easily be used to create reusable objects to increase server performance.
         //
-        private void Init()
+        private void Init(int receiveBufferSize)
         {
+            m_totalBytesRead = 0;
+            m_receiveBufferSize = receiveBufferSize;
+            // allocate buffers such that the maximum number of sockets can have one outstanding read and 
+            //write posted to the socket simultaneously  
+            m_bufferManager = new BufferManager(receiveBufferSize * opsToPreAlloc,
+                receiveBufferSize);
+
             // Allocates one large byte buffer which all I/O operations use a piece of.  This gaurds 
             // against memory fragmentation
             m_bufferManager.InitBuffer();
@@ -246,6 +250,8 @@ namespace Easytl.CommunicationHelper
 
             // assign a byte buffer from the buffer pool to the SocketAsyncEventArg object
             m_bufferManager.SetBuffer(readEventArg);
+
+            ReciveData += reciveCommand;
         }
 
         // Starts the server such that it is listening for 
@@ -258,18 +264,32 @@ namespace Easytl.CommunicationHelper
         /// </summary>
         public void Connect()
         {
-            m_reconnect = true;
+            lock (readEventArg)
+            {
+                m_reconnect = true;
 
-            // create the socket which listens for incoming connections
-            localSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                // create the socket which listens for incoming connections
+                localSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
-            acceptEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), Port);
-            acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>((object sender, SocketAsyncEventArgs e) => { ProcessConnect(e); });
+                SocketAsyncEventArgs acceptEventArg = new SocketAsyncEventArgs();
+                acceptEventArg.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), Port);
+                acceptEventArg.Completed += new EventHandler<SocketAsyncEventArgs>((object sender, SocketAsyncEventArgs e) => { ProcessConnect(e); });
 
-            bool willRaiseEvent = localSocket.ConnectAsync(acceptEventArg);
-            if (!willRaiseEvent)
-                ProcessConnect(acceptEventArg);
+                bool willRaiseEvent = localSocket.ConnectAsync(acceptEventArg);
+                if (!willRaiseEvent)
+                    ProcessConnect(acceptEventArg);
+            }
+        }
+
+        /// <summary>
+        /// 连接
+        /// </summary>
+        public void Connect(string ip, int port)
+        {
+            IP = ip;
+            Port = port;
+
+            Connect();
         }
 
         private void ProcessConnect(SocketAsyncEventArgs e)
@@ -405,7 +425,8 @@ namespace Easytl.CommunicationHelper
             if (m_reconnect)
             {
                 Thread.Sleep(ReConnectInterval * 1000);
-                Connect();
+                if (m_reconnect)
+                    Connect();
             }
         }
 
@@ -415,7 +436,11 @@ namespace Easytl.CommunicationHelper
         public void DisConnect()
         {
             m_reconnect = false;
-            (readEventArg.UserToken as AsyncUserToken).Socket.Disconnect(true);
+            try
+            {
+                (readEventArg.UserToken as AsyncUserToken).Socket.Disconnect(true);
+            }
+            catch (Exception) { }
         }
     }
 
@@ -561,28 +586,42 @@ namespace Easytl.CommunicationHelper
     class CommandHepler
     {
         /// <summary>
-        /// 分析接收到的协议数据，并把它转为正确的一条协议输出，返回应清除的协议数据长度
+        /// 分析接收到的协议数据，并把它转为正确的一条协议输出
         /// </summary>
-        public static int AnalyCommand(int Command_MinByteCount, string Command_Head, Func<string, int> Body_ByteCount, ref string Command)
+        public static string AnalyCommand(string CommandHead, Func<string, int> GetCommandLength, ref StringBuilder CommandString)
         {
-            int Command_SIndex = 0, Command_BodyByteCount = 0;
-            if (Command_MinByteCount > 0)
+            if (CommandString.Length > CommandHead.Length)
             {
-                if (!string.IsNullOrEmpty(Command_Head))
-                    Command_SIndex = Command.IndexOf(Command_Head);
-                if (Command.Length >= Command_SIndex + (Command_MinByteCount * 2))
+                string CString = CommandString.ToString();
+                int CommandSIndex = CString.IndexOf(CommandHead);
+
+                if (CommandSIndex >= 0)
                 {
-                    Command_BodyByteCount = Body_ByteCount(Command.Substring(Command_SIndex, Command_MinByteCount * 2));
-                    if (Command.Length >= Command_SIndex + (Command_MinByteCount * 2) + (Command_BodyByteCount * 2))
-                        Command = Command.Substring(Command_SIndex, (Command_MinByteCount * 2) + (Command_BodyByteCount * 2));
+                    int CommandLength = GetCommandLength(CString.Substring(CommandSIndex));
+                    if (CommandLength > 0)
+                    {
+                        if (CString.Length >= CommandSIndex + CommandLength)
+                        {
+                            CommandString.Remove(0, CommandSIndex + CommandLength);
+                            return CString.Substring(CommandSIndex, CommandLength);
+                        }
+                        else
+                            return string.Empty;
+                    }
                     else
-                        Command = string.Empty;
+                    {
+                        CommandString.Clear();
+                        return string.Empty;
+                    }
                 }
                 else
-                    Command = string.Empty;
+                {
+                    CommandString.Clear();
+                    return string.Empty;
+                }
             }
-
-            return Command_SIndex + Command.Length;
+            else
+                return string.Empty;
         }
     }
 }

@@ -28,12 +28,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 协议头
         /// </summary>
-        public virtual string Command_Head { get; }
-
-        /// <summary>
-        /// 协议最小长度
-        /// </summary>
-        public virtual int Command_MinByteCount { get; }
+        public virtual string CommandHead { get; } = string.Empty;
 
         #endregion
 
@@ -66,16 +61,19 @@ namespace Easytl.CommunicationHelper
                 AsyncUserToken token = sender as AsyncUserToken;
                 token.CommandString.Append(BitConverter.ToString(e.Data).ToUpper().Trim().Replace("-", string.Empty));
 
-                string Command = token.CommandString.ToString();
-                token.CommandString.Remove(0, CommandHepler.AnalyCommand(Command_MinByteCount, Command_Head, Body_ByteCount, ref Command));
-
-                if (!string.IsNullOrEmpty(Command) && (ReciveCommand != null))
+                string Command;
+                do
                 {
-                    foreach (EventHandler<ReciveCommandEventArgs> deleg in ReciveCommand.GetInvocationList())
+                    Command = CommandHepler.AnalyCommand(CommandHead, GetCommandLength, ref token.CommandString);
+
+                    if (!string.IsNullOrEmpty(Command) && (ReciveCommand != null))
                     {
-                        deleg.BeginInvoke(sender, new ReciveCommandEventArgs() { Command = Command }, null, null);
+                        foreach (EventHandler<ReciveCommandEventArgs> deleg in ReciveCommand.GetInvocationList())
+                        {
+                            deleg.BeginInvoke(sender, new ReciveCommandEventArgs() { Command = Command }, null, null);
+                        }
                     }
-                }
+                } while (!string.IsNullOrEmpty(Command));
             }
             catch (Exception ex)
             {
@@ -90,11 +88,11 @@ namespace Easytl.CommunicationHelper
         }
 
         /// <summary>
-        /// 获取协议内容长度
+        /// 获取协议长度
         /// </summary>
-        /// <param name="Command_Min">最小长度的协议</param>
-        /// <returns>返回协议内容长度</returns>
-        public abstract int Body_ByteCount(string Command_Min);
+        /// <param name="Command">协议</param>
+        /// <returns>返回协议长度</returns>
+        public abstract int GetCommandLength(string Command);
 
         /// <summary>
         /// 发送数据

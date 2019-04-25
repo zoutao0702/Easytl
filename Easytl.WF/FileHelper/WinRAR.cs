@@ -67,6 +67,7 @@ namespace Easytl.WF.FileHelper
         {
             if (File.Exists(WinRARPath))
             {
+                Easytl.THelper.CreateFolder(SaveDir);
                 String commandOptions = string.Format("x \"{0}\" \"{1}\" -y", RARFileName, SaveDir);
 
                 ProcessStartInfo processStartInfo = new ProcessStartInfo();

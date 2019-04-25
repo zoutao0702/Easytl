@@ -1108,12 +1108,7 @@
         </member>
         <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.MD5">
             <summary>
-            【散列算法】MD5, 32位加密(输出为32位16进制字符串)
-            </summary>
-        </member>
-        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.MD5_16">
-            <summary>
-            【散列算法】MD5, 16位加密(输出为16位16进制字符串)
+            【散列算法】MD5加密(输出为16进制字符串)
             </summary>
         </member>
         <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.SHA1">

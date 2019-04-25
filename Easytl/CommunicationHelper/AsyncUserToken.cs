@@ -30,7 +30,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>  
         /// 协议缓存区  
         /// </summary>  
-        internal StringBuilder CommandString { get; set; }
+        internal StringBuilder CommandString;
 
 
         /// <summary>
