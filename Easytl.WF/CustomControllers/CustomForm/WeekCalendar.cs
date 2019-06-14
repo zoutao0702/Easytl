@@ -77,33 +77,30 @@ namespace Easytl.WF.CustomControllers.CustomForm
         /// </summary>
         public void CheckWeek(DayOfWeek WeekI, bool Check)
         {
-            if (!ReadOnly)
+            Label lb = this.Controls["Week" + Convert.ToInt32(WeekI).ToString()] as Label;
+            bool State = GetState(WeekI);
+            if (Check)
             {
-                Label lb = this.Controls["Week" + Convert.ToInt32(WeekI).ToString()] as Label;
-                bool State = GetState(WeekI);
-                if (Check)
+                if (!State)
                 {
-                    if (!State)
-                    {
-                        lb.BorderStyle = BorderStyle.FixedSingle;
-                        lb.BackColor = Color.FromArgb(216, 233, 255);
+                    lb.BorderStyle = BorderStyle.FixedSingle;
+                    lb.BackColor = Color.FromArgb(216, 233, 255);
 
-                        WeekList.Add(WeekI);
-                    }
+                    WeekList.Add(WeekI);
                 }
-                else
-                {
-                    if (State)
-                    {
-                        lb.BorderStyle = BorderStyle.None;
-                        lb.BackColor = lb.Parent.BackColor;
-
-                        WeekList.Remove(WeekI);
-                    }
-                }
-
-                ValueChanged?.Invoke(this, new EventArgs());
             }
+            else
+            {
+                if (State)
+                {
+                    lb.BorderStyle = BorderStyle.None;
+                    lb.BackColor = lb.Parent.BackColor;
+
+                    WeekList.Remove(WeekI);
+                }
+            }
+
+            ValueChanged?.Invoke(this, new EventArgs());
         }
 
         /// <summary>
@@ -122,16 +119,13 @@ namespace Easytl.WF.CustomControllers.CustomForm
         /// </summary>
         public void Clear()
         {
-            if (!ReadOnly)
+            DayOfWeek[] weeks = new DayOfWeek[WeekList.Count];
+            WeekList.CopyTo(weeks);
+            foreach (var item in weeks)
             {
-                DayOfWeek[] weeks = new DayOfWeek[WeekList.Count];
-                WeekList.CopyTo(weeks);
-                foreach (var item in weeks)
-                {
-                    CheckWeek(item, false);
-                }
-                WeekList.Clear();
+                CheckWeek(item, false);
             }
+            WeekList.Clear();
         }
     }
 }

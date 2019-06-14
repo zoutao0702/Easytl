@@ -77,36 +77,33 @@ namespace Easytl.WF.CustomControllers.CustomForm
         /// </summary>
         public void CheckDay(int Day, bool Check)
         {
-            if (!ReadOnly)
+            string lbname = "Month" + Day.ToString();
+            if (this.Controls.ContainsKey(lbname))
             {
-                string lbname = "Month" + Day.ToString();
-                if (this.Controls.ContainsKey(lbname))
+                Label lb = this.Controls[lbname] as Label;
+                bool State = GetState(Day);
+                if (Check)
                 {
-                    Label lb = this.Controls[lbname] as Label;
-                    bool State = GetState(Day);
-                    if (Check)
+                    if (!State)
                     {
-                        if (!State)
-                        {
-                            lb.BorderStyle = BorderStyle.FixedSingle;
-                            lb.BackColor = Color.FromArgb(216, 233, 255);
+                        lb.BorderStyle = BorderStyle.FixedSingle;
+                        lb.BackColor = Color.FromArgb(216, 233, 255);
 
-                            MonthList.Add(Day);
-                        }
+                        MonthList.Add(Day);
                     }
-                    else
-                    {
-                        if (State)
-                        {
-                            lb.BorderStyle = BorderStyle.None;
-                            lb.BackColor = lb.Parent.BackColor;
-
-                            MonthList.Remove(Day);
-                        }
-                    }
-
-                    ValueChanged?.Invoke(this, new EventArgs());
                 }
+                else
+                {
+                    if (State)
+                    {
+                        lb.BorderStyle = BorderStyle.None;
+                        lb.BackColor = lb.Parent.BackColor;
+
+                        MonthList.Remove(Day);
+                    }
+                }
+
+                ValueChanged?.Invoke(this, new EventArgs());
             }
         }
 
@@ -126,16 +123,13 @@ namespace Easytl.WF.CustomControllers.CustomForm
         /// </summary>
         public void Clear()
         {
-            if (!ReadOnly)
+            int[] months = new int[MonthList.Count];
+            MonthList.CopyTo(months);
+            foreach (var item in months)
             {
-                int[] months = new int[MonthList.Count];
-                MonthList.CopyTo(months);
-                foreach (var item in months)
-                {
-                    CheckDay(item, false);
-                }
-                MonthList.Clear();
+                CheckDay(item, false);
             }
+            MonthList.Clear();
         }
     }
 }

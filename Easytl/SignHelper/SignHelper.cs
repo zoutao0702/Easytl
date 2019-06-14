@@ -17,12 +17,16 @@ namespace Easytl.SignHelper
         /// <summary>
         /// 获取签名前拼接字符串
         /// </summary>
-        public string GetStringSignTemp<T>(T model, BindingFlags bindingAttr, string SignKey, bool ParaAsc = true, StringComparison StrCompar = StringComparison.Ordinal)
+        public static string GetStringSignTemp<T>(T model, string SignKey, bool ParaAsc = true, StringComparison StrCompar = StringComparison.Ordinal, string SplitStr = "&", Func<string, string, string> KeyValueJoin = null, BindingFlags? bindingAttr = null)
         {
             StringBuilder stringSignTemp = new StringBuilder();
             if (model != null)
             {
-                List<PropertyInfo> ProList = model.GetType().GetProperties(bindingAttr).ToList();
+                List<PropertyInfo> ProList;
+                if (bindingAttr.HasValue)
+                    ProList = model.GetType().GetProperties(bindingAttr.Value).ToList();
+                else
+                    ProList = model.GetType().GetProperties().ToList();
                 if (ParaAsc)
                     ProList.Sort((x, y) => string.Compare(x.Name, y.Name, StrCompar));
                 else
@@ -33,7 +37,19 @@ namespace Easytl.SignHelper
                     if (THelper.GetCustomAttribute<NoSignAttribute>(ProList[i]) == null)
                     {
                         object ProIValue = ProList[i].GetValue(model, null);
-                        KeyValueJoin(ref stringSignTemp, ProList[i].Name, ProIValue);
+                        if (ProIValue != null)
+                        {
+                            if (!string.IsNullOrEmpty(ProIValue.ToString().Trim()))
+                            {
+                                if (stringSignTemp.Length > 0)
+                                    stringSignTemp.Append(SplitStr);
+
+                                if (KeyValueJoin != null)
+                                    stringSignTemp.Append(KeyValueJoin(ProList[i].Name, ProIValue.ToString()));
+                                else
+                                    stringSignTemp.Append(ProList[i].Name + "=" + ProIValue.ToString());
+                            }
+                        }
                     }
                 }
             }
@@ -47,7 +63,7 @@ namespace Easytl.SignHelper
         /// <summary>
         /// 获取签名前拼接字符串
         /// </summary>
-        public string GetStringSignTemp(NameValueCollection ParamList, string SignKey, bool ParaAsc = true, StringComparison StrCompar = StringComparison.Ordinal)
+        public static string GetStringSignTemp(NameValueCollection ParamList, string SignKey, bool ParaAsc = true, StringComparison StrCompar = StringComparison.Ordinal, string SplitStr = "&", Func<string, string, string> KeyValueJoin = null)
         {
             StringBuilder stringSignTemp = new StringBuilder();
             if (ParamList.Count > 0)
@@ -66,7 +82,19 @@ namespace Easytl.SignHelper
 
                 foreach (KeyValuePair<string, string> keyv in ParamDic)
                 {
-                    KeyValueJoin(ref stringSignTemp, keyv.Key, keyv.Value);
+                    if (keyv.Value != null)
+                    {
+                        if (!string.IsNullOrEmpty(keyv.Value.ToString().Trim()))
+                        {
+                            if (stringSignTemp.Length > 0)
+                                stringSignTemp.Append(SplitStr);
+
+                            if (KeyValueJoin != null)
+                                stringSignTemp.Append(KeyValueJoin(keyv.Key, keyv.Value));
+                            else
+                                stringSignTemp.Append(keyv.Key + "=" + keyv.Value);
+                        }
+                    }
                 }
             }
 
@@ -74,23 +102,6 @@ namespace Easytl.SignHelper
                 stringSignTemp.Append(SignKey);
 
             return stringSignTemp.ToString();
-        }
-
-        /// <summary>
-        /// 签名参数键值对的拼接方式
-        /// </summary>
-        protected virtual void KeyValueJoin(ref StringBuilder StringSignTemp, string key, object value)
-        {
-            if (value != null)
-            {
-                if (!string.IsNullOrEmpty(value.ToString().Trim()))
-                {
-                    if (StringSignTemp.Length > 0)
-                        StringSignTemp.Append("&");
-
-                    StringSignTemp.Append(key + "=" + value);
-                }
-            }
         }
 
         /// <summary>
@@ -111,7 +122,7 @@ namespace Easytl.SignHelper
         /// <param name="HashbyteSignStr">待签名Hash字符串值</param>
         /// <param name="HashAlgorithmType">签名算法</param>
         /// <param name="Encode">字符串编码</param>
-        public string CreateRSASign(SafeHelper.EncryptionHelper.InOutParaType InOutParaType, string HashbyteSignStr, string PrivateKey, RSASignHashAlgorithmType HashAlgorithmType, Encoding Encode)
+        public static string CreateRSASign(SafeHelper.EncryptionHelper.InOutParaType InOutParaType, string HashbyteSignStr, string PrivateKey, RSASignHashAlgorithmType HashAlgorithmType, Encoding Encode)
         {
             try
             {

@@ -208,8 +208,7 @@ namespace Easytl.SafeHelper
                 ect.Padding = Padding;
                 ICryptoTransform Encrypt = ect.CreateEncryptor();
                 byte[] data = Encode.GetBytes(EncryptString);
-                byte[] result = Encrypt.TransformFinalBlock(data, 0, data.Length);
-                return result;
+                return Encrypt.TransformFinalBlock(data, 0, data.Length);
             }
             catch (Exception ex) { if (throwEx) throw ex; }
             return null;

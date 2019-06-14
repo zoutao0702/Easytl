@@ -132,23 +132,37 @@ namespace Easytl.Web.WebHelper
                 }
 
                 HttpWebResponse response = null;
+                OpStatusCode = HttpStatusCode.NotFound;
+                OpStatusDescription = null;
                 try
                 {
                     response = (HttpWebResponse)myRequest.GetResponse();
                 }
                 catch (WebException e)
                 {
-                    response = (HttpWebResponse)e.Response;
+                    if (e.Response != null)
+                        response = (HttpWebResponse)e.Response;
+                    else
+                    {
+                        OpStatusCode = HttpStatusCode.RequestTimeout;
+                        OpStatusDescription = e.Message;
+                    }
                 }
-                OpStatusCode = response.StatusCode;
-                OpStatusDescription = response.StatusDescription;
-                using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingType)))
+
+                if (response != null)
                 {
-                    string result = sr.ReadToEnd();
-                    sr.Close();
-                    response.Close();
-                    return result;
+                    OpStatusCode = response.StatusCode;
+                    OpStatusDescription = response.StatusDescription;
+                    using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding(encodingType)))
+                    {
+                        string result = sr.ReadToEnd();
+                        sr.Close();
+                        response.Close();
+                        return result;
+                    }
                 }
+                else
+                    return string.Empty;
             }
             catch (Exception ex)
             {
@@ -181,11 +195,41 @@ namespace Easytl.Web.WebHelper
 
 
         /// <summary>
+        /// 模拟http/post请求（application/x-www-form-urlencoded）
+        /// </summary>
+        public static string HttpRequest_Post_T<T>(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, T values, BindingFlags bindingAttr = BindingFlags.Public, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000)
+        {
+            PropertyInfo[] properties;
+            if (bindingAttr == BindingFlags.Public)
+                properties = typeof(T).GetProperties();
+            else
+                properties = typeof(T).GetProperties(bindingAttr);
+
+            NameValueCollection nameValueCollection = new NameValueCollection();
+            for (int i = 0; i < properties.Length; i++)
+            {
+                PropertyInfo propertyInfo = properties[i];
+                if (propertyInfo.CanRead)
+                {
+                    object value = propertyInfo.GetValue(values, null);
+                    if (value != null)
+                    {
+                        if (propertyInfo.PropertyType.IsEnum)
+                            nameValueCollection.Add(propertyInfo.Name, Convert.ToInt32(value).ToString());
+                        else
+                            nameValueCollection.Add(propertyInfo.Name, value.ToString());
+                    }
+                }
+            }
+            return RequestHelper.HttpRequest_Post(out OpStatusCode, out OpStatusDescription, url, nameValueCollection, headers, encodingType, timeout);
+        }
+
+
+        /// <summary>
         /// 模拟http/post请求（multipart/form-data）
         /// </summary>
-        public static string HttpRequest_Post_FormData(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, NameValueCollection values, List<PostUploadFile> files, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000, string boundary = null)
+        public static string HttpRequest_Post_FormData(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, NameValueCollection values, List<PostUploadFile> files = null, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000, string boundary = null)
         {
-            string result;
             try
             {
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -222,18 +266,21 @@ namespace Easytl.Web.WebHelper
                     }
                 }
 
-                foreach (PostUploadFile file in files)
+                if (files != null)
                 {
-                    Str = "--" + boundary + Enter
-                        + "Content-Disposition: form-data; name=\"" + file.FieldName + "\"; filename=\"" + file.FileName + "\"" + Enter;
+                    foreach (PostUploadFile file in files)
+                    {
+                        Str = "--" + boundary + Enter
+                            + "Content-Disposition: form-data; name=\"" + file.FieldName + "\"; filename=\"" + file.FileName + "\"" + Enter;
 
-                    if (!string.IsNullOrEmpty(file.ContentType))
-                        Str += "Content-Type:" + file.ContentType + Enter;
-                    
-                    Str += Enter;
-                    bytes = encoding.GetBytes(Str);
-                    requestStream.Write(bytes, 0, bytes.Length);
-                    requestStream.Write(file.Content, 0, file.ContentLength);
+                        if (!string.IsNullOrEmpty(file.ContentType))
+                            Str += "Content-Type:" + file.ContentType + Enter;
+
+                        Str += Enter;
+                        bytes = encoding.GetBytes(Str);
+                        requestStream.Write(bytes, 0, bytes.Length);
+                        requestStream.Write(file.Content, 0, file.ContentLength);
+                    }
                 }
 
                 Str = Enter + "--" + boundary + "--";
@@ -242,37 +289,51 @@ namespace Easytl.Web.WebHelper
                 requestStream.Close();
 
                 HttpWebResponse httpWebResponse = null;
+                OpStatusCode = HttpStatusCode.NotFound;
+                OpStatusDescription = null;
                 try
                 {
                     httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                 }
-                catch (WebException ex)
+                catch (WebException e)
                 {
-                    httpWebResponse = (HttpWebResponse)ex.Response;
+                    if (e.Response != null)
+                        httpWebResponse = (HttpWebResponse)e.Response;
+                    else
+                    {
+                        OpStatusCode = HttpStatusCode.RequestTimeout;
+                        OpStatusDescription = e.Message;
+                    }
                 }
-                OpStatusCode = httpWebResponse.StatusCode;
-                OpStatusDescription = httpWebResponse.StatusDescription;
-                using (StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream(), encoding))
+
+                if (httpWebResponse != null)
                 {
-                    result = streamReader.ReadToEnd();
-                    streamReader.Close();
-                    httpWebResponse.Close();
+                    OpStatusCode = httpWebResponse.StatusCode;
+                    OpStatusDescription = httpWebResponse.StatusDescription;
+                    using (StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream(), encoding))
+                    {
+                        string result = streamReader.ReadToEnd();
+                        streamReader.Close();
+                        httpWebResponse.Close();
+                        return result;
+                    }
                 }
+                else
+                    return string.Empty;
             }
-            catch (Exception ex2)
+            catch (Exception ex)
             {
                 OpStatusCode = HttpStatusCode.ExpectationFailed;
-                OpStatusDescription = ex2.Message;
-                result = string.Empty;
+                OpStatusDescription = ex.Message;
+                return string.Empty;
             }
-            return result;
         }
 
 
         /// <summary>
-        /// 模拟http/post请求（application/x-www-form-urlencoded）
+        /// 模拟http/post请求（multipart/form-data）
         /// </summary>
-        public static string HttpRequest_Post_T<T>(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, T values, BindingFlags bindingAttr = BindingFlags.Public, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000)
+        public static string HttpRequest_Post_FormData_T<T>(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, T values, BindingFlags bindingAttr = BindingFlags.Public, List<PostUploadFile> files = null, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000, string boundary = null)
         {
             PropertyInfo[] properties;
             if (bindingAttr == BindingFlags.Public)
@@ -284,16 +345,19 @@ namespace Easytl.Web.WebHelper
             for (int i = 0; i < properties.Length; i++)
             {
                 PropertyInfo propertyInfo = properties[i];
-                object value = propertyInfo.GetValue(values, null);
-                if (value != null)
+                if (propertyInfo.CanRead)
                 {
-                    if (propertyInfo.PropertyType.IsEnum)
-                        nameValueCollection.Add(propertyInfo.Name, Convert.ToInt32(value).ToString());
-                    else
-                        nameValueCollection.Add(propertyInfo.Name, value.ToString());
+                    object value = propertyInfo.GetValue(values, null);
+                    if (value != null)
+                    {
+                        if (propertyInfo.PropertyType.IsEnum)
+                            nameValueCollection.Add(propertyInfo.Name, Convert.ToInt32(value).ToString());
+                        else
+                            nameValueCollection.Add(propertyInfo.Name, value.ToString());
+                    }
                 }
             }
-            return RequestHelper.HttpRequest_Post(out OpStatusCode, out OpStatusDescription, url, nameValueCollection, headers, encodingType, timeout);
+            return RequestHelper.HttpRequest_Post_FormData(out OpStatusCode, out OpStatusDescription, url, nameValueCollection, files, headers, encodingType, timeout);
         }
 
 

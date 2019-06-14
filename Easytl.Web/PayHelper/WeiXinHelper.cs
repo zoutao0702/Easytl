@@ -57,7 +57,7 @@ namespace Easytl.Web.PayHelper
         /// </summary>
         string GetSign<T>(T model)
         {
-            return WX_EncryptionHelper.Encrypt(SafeHelper.EncryptionHelper.InOutParaType.Str16, SafeHelper.EncryptionHelper.Encrypt_Type.MD5, WX_SignHelper.GetStringSignTemp(model, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance, APIKey));
+            return WX_EncryptionHelper.Encrypt(SafeHelper.EncryptionHelper.InOutParaType.Str16, SafeHelper.EncryptionHelper.Encrypt_Type.MD5, SignHelper.SignHelper.GetStringSignTemp(model, APIKey, bindingAttr: System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance));
         }
 
         WXReturn WeiXinResStrToWXReturn<T>(string ResStr) where T : WXReturn

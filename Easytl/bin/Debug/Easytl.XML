@@ -469,19 +469,14 @@
             签名帮助类
             </summary>
         </member>
-        <member name="M:Easytl.SignHelper.SignHelper.GetStringSignTemp``1(``0,System.Reflection.BindingFlags,System.String,System.Boolean,System.StringComparison)">
+        <member name="M:Easytl.SignHelper.SignHelper.GetStringSignTemp``1(``0,System.String,System.Boolean,System.StringComparison,System.String,System.Func{System.String,System.String,System.String},System.Nullable{System.Reflection.BindingFlags})">
             <summary>
             获取签名前拼接字符串
             </summary>
         </member>
-        <member name="M:Easytl.SignHelper.SignHelper.GetStringSignTemp(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean,System.StringComparison)">
+        <member name="M:Easytl.SignHelper.SignHelper.GetStringSignTemp(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean,System.StringComparison,System.String,System.Func{System.String,System.String,System.String})">
             <summary>
             获取签名前拼接字符串
-            </summary>
-        </member>
-        <member name="M:Easytl.SignHelper.SignHelper.KeyValueJoin(System.Text.StringBuilder@,System.String,System.Object)">
-            <summary>
-            签名参数键值对的拼接方式
             </summary>
         </member>
         <member name="T:Easytl.SignHelper.SignHelper.RSASignHashAlgorithmType">
