@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="CommunicationHelper\AsyncUserToken.cs" />
     <Compile Include="CommunicationHelper\TCPClient.cs" />
+    <Compile Include="Semaphore.cs" />
     <Compile Include="SignHelper\SignHelper.cs" />
     <Compile Include="THelper.cs" />
     <Compile Include="SignHelper\Attribute\NoSignAttribute.cs" />

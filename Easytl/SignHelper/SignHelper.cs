@@ -150,6 +150,7 @@ namespace Easytl.SignHelper
                 RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
 
                 RSA.FromXmlString(PrivateKey);
+                
                 RSAPKCS1SignatureFormatter RSAFormatter = new RSAPKCS1SignatureFormatter(RSA);
                 //设置签名的算法
                 RSAFormatter.SetHashAlgorithm(HashAlgorithmType.ToString());

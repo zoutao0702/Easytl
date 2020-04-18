@@ -380,22 +380,22 @@ namespace Easytl
         /// <summary>
         /// 日期和时间转化为(16进制)4字节字符串（默认支持最大日期到2063年）
         /// </summary>
-        /// <param name="date">日期和时间</param>
+        /// <param name="datetime">日期和时间</param>
         /// <param name="StartYear">计算开始日期</param>
         /// <returns></returns>
-        public static string DateToB4Str16(this DateTime date, int StartYear = 2000)
+        public static string DateTimeToB4Str16(this DateTime datetime, int StartYear = 2000)
         {
-            string YearT2 = Convert.ToString((date.Year - StartYear), 2);
+            string YearT2 = Convert.ToString((datetime.Year - StartYear), 2);
             YearT2 = Str_Add0_Before(YearT2, 6);
-            string MonthT2 = Convert.ToString(date.Month, 2);
+            string MonthT2 = Convert.ToString(datetime.Month, 2);
             MonthT2 = Str_Add0_Before(MonthT2, 4);
-            string DayT2 = Convert.ToString(date.Day, 2);
+            string DayT2 = Convert.ToString(datetime.Day, 2);
             DayT2 = Str_Add0_Before(DayT2, 5);
-            string HourT2 = Convert.ToString(date.Hour, 2);
+            string HourT2 = Convert.ToString(datetime.Hour, 2);
             HourT2 = Str_Add0_Before(HourT2, 5);
-            string MinuteT2 = Convert.ToString(date.Minute, 2);
+            string MinuteT2 = Convert.ToString(datetime.Minute, 2);
             MinuteT2 = Str_Add0_Before(MinuteT2, 6);
-            string SecondT2 = Convert.ToString(date.Second, 2);
+            string SecondT2 = Convert.ToString(datetime.Second, 2);
             SecondT2 = Str_Add0_Before(SecondT2, 6);
             string dateT2 = YearT2 + MonthT2 + DayT2 + HourT2 + MinuteT2 + SecondT2;
             string date1T16 = Str_Add0_Before(Convert.ToString(Convert.ToByte(dateT2.Substring(0, 8), 2), 16), 2);
@@ -579,16 +579,16 @@ namespace Easytl
         /// <param name="Str16">16进制字符串</param>
         public static string Str16_To_Str2(this string Str16)
         {
-            string Str2 = string.Empty;
+            StringBuilder Str2 = new StringBuilder();
             if (Str16.Length % 2 != 0)
             {
-                return Str2;
+                return Str2.ToString();
             }
-            for (int i = 0; i < Str16.Length / 2; i++)
+            for (int i = 0; i < Str16.Length; i += 2)
             {
-                Str2 += Str_Add0_Before(Convert.ToString(Convert.ToByte(Str16.Substring(i * 2, 2), 16), 2), 8);
+                Str2.Append(Str_Add0_Before(Convert.ToString(Convert.ToByte(Str16.Substring(i, 2), 16), 2), 8));
             }
-            return Str2;
+            return Str2.ToString();
         }
 
         /// <summary>
@@ -602,9 +602,9 @@ namespace Easytl
                 return null;
             }
             byte[] Bytes = new byte[Str16.Length / 2];
-            for (int i = 0; i < Str16.Length / 2; i++)
+            for (int i = 0, bi = 0; i < Str16.Length; i += 2, bi++)
             {
-                Bytes[i] = Convert.ToByte(Str16.Substring(i * 2, 2), 16);
+                Bytes[bi] = Convert.ToByte(Str16.Substring(i, 2), 16);
             }
             return Bytes;
         }
@@ -615,16 +615,16 @@ namespace Easytl
         /// <param name="Str2">2进制字符串</param>
         public static string Str2_To_Str16(this string Str2)
         {
-            string Str16 = string.Empty;
+            StringBuilder Str16 = new StringBuilder();
             if (Str2.Length % 8 != 0)
             {
-                return Str16;
+                return Str16.ToString();
             }
-            for (int i = 0; i < Str2.Length / 8; i++)
+            for (int i = 0; i < Str2.Length; i += 8)
             {
-                Str16 += Str_Add0_Before(Convert.ToString(Convert.ToByte(Str2.Substring(i * 8, 8), 2), 16), 2);
+                Str16.Append(Str_Add0_Before(Convert.ToString(Convert.ToByte(Str2.Substring(i, 8), 2), 16), 2));
             }
-            return Str16;
+            return Str16.ToString();
         }
 
         /// <summary>
@@ -787,12 +787,47 @@ namespace Easytl
         /// <summary>
         /// 获取本地IPv4地址
         /// </summary>
-        public static string GetHostIPv4()
+        public static string GetHostIPv4(string IPRegex)
         {
             foreach (var item in System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName()))
             {
                 if (item.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
-                    return item.ToString();
+                {
+                    if (string.IsNullOrEmpty(IPRegex))
+                        return item.ToString();
+
+                    if (System.Text.RegularExpressions.Regex.IsMatch(item.ToString(), IPRegex))
+                        return item.ToString();
+                }
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// 获取本地IPv4地址
+        /// </summary>
+        public static string GetHostIPv4(string[] NetNames)
+        {
+            System.Net.NetworkInformation.NetworkInterface[] interfaces = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+            int len = interfaces.Length;
+
+            for (int i = 0; i < len; i++)
+            {
+                System.Net.NetworkInformation.NetworkInterface ni = interfaces[i];
+                if (ni.NetworkInterfaceType == System.Net.NetworkInformation.NetworkInterfaceType.Ethernet)
+                {
+                    if (NetNames.Contains(ni.Name))
+                    {
+                        System.Net.NetworkInformation.IPInterfaceProperties property = ni.GetIPProperties();
+                        foreach (System.Net.NetworkInformation.UnicastIPAddressInformation ip in property.UnicastAddresses)
+                        {
+                            if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                                return ip.Address.ToString();
+                        }
+                    }
+                }
+
             }
 
             return string.Empty;
@@ -801,9 +836,10 @@ namespace Easytl
         /// <summary>
         /// 获取时间戳
         /// </summary>
-        public static long GetTimestamp(bool UTC = false, string StartDateTime = "1970/01/01 00:00:00")
+        public static ulong GetTimestamp(bool UTC = false, string StartDateTime = "1970/01/01 00:00:00", bool Milliseconds = false)
         {
-            return Convert.ToInt64((((UTC) ? DateTime.UtcNow : DateTime.Now) - Convert.ToDateTime(StartDateTime)).TotalSeconds);
+            TimeSpan span = (((UTC) ? DateTime.UtcNow : DateTime.Now) - Convert.ToDateTime(StartDateTime));
+            return Convert.ToUInt64((Milliseconds) ? span.TotalMilliseconds : span.TotalSeconds);
         }
 
         /// <summary>

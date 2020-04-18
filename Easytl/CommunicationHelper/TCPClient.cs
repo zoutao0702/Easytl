@@ -41,7 +41,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 协议头
         /// </summary>
-        public virtual string CommandHead { get; set; } = string.Empty;
+        protected virtual string CommandHead { get; set; } = string.Empty;
 
         #endregion
 
@@ -66,11 +66,10 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 接收协议
         /// </summary>
-        void reciveCommand(object sender, ReciveEventArgs e)
+        void reciveCommand(AsyncUserToken token, ReciveEventArgs e)
         {
             try
             {
-                AsyncUserToken token = sender as AsyncUserToken;
                 token.CommandString.Append(BitConverter.ToString(e.Data).ToUpper().Trim().Replace("-", string.Empty));
 
                 string Command;
@@ -82,7 +81,7 @@ namespace Easytl.CommunicationHelper
                     {
                         foreach (EventHandler<ReciveCommandEventArgs> deleg in ReciveCommand.GetInvocationList())
                         {
-                            deleg.BeginInvoke(sender, new ReciveCommandEventArgs() { Command = Command }, null, null);
+                            deleg.BeginInvoke(this, new ReciveCommandEventArgs() { Command = Command }, null, null);
                         }
                     }
                 } while (!string.IsNullOrEmpty(Command));
@@ -93,7 +92,7 @@ namespace Easytl.CommunicationHelper
                 {
                     foreach (EventHandler<Exception> deleg in ReciveCommandException.GetInvocationList())
                     {
-                        deleg.BeginInvoke(sender, ex, null, null);
+                        deleg.BeginInvoke(this, ex, null, null);
                     }
                 }
             }
@@ -103,14 +102,14 @@ namespace Easytl.CommunicationHelper
         /// 获取协议长度
         /// </summary>
         /// <param name="Command">协议</param>
-        /// <returns>返回协议长度</returns>
-        public abstract int GetCommandLength(string Command);
+        /// <returns>返回协议长度（16进制字符串总长度）</returns>
+        protected abstract int GetCommandLength(string Command);
 
         /// <summary>
         /// 发送数据
         /// </summary>
         /// <param name="Data">要发送的数据</param>
-        public void Send(byte[] Data)
+        public virtual void Send(byte[] Data)
         {
             try
             {
@@ -250,8 +249,6 @@ namespace Easytl.CommunicationHelper
 
             // assign a byte buffer from the buffer pool to the SocketAsyncEventArg object
             m_bufferManager.SetBuffer(readEventArg);
-
-            ReciveData += reciveCommand;
         }
 
         // Starts the server such that it is listening for 
@@ -262,7 +259,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 连接
         /// </summary>
-        public void Connect()
+        public virtual void Connect()
         {
             lock (readEventArg)
             {
@@ -284,7 +281,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 连接
         /// </summary>
-        public void Connect(string ip, int port)
+        public virtual void Connect(string ip, int port)
         {
             IP = ip;
             Port = port;
@@ -307,7 +304,7 @@ namespace Easytl.CommunicationHelper
                 {
                     foreach (EventHandler<ConnectEventArgs> deleg in ConnectStateChanged.GetInvocationList())
                     {
-                        deleg.BeginInvoke(readEventArg.UserToken, new ConnectEventArgs() { Connect = true }, null, null);
+                        deleg.BeginInvoke(this, new ConnectEventArgs() { Connect = true }, null, null);
                     }
                 }
 
@@ -323,7 +320,7 @@ namespace Easytl.CommunicationHelper
                 {
                     foreach (EventHandler<Exception> deleg in ConnectException.GetInvocationList())
                     {
-                        deleg.BeginInvoke(readEventArg.UserToken, new Exception("连接失败"), null, null);
+                        deleg.BeginInvoke(this, new Exception("ConnectSocket is null"), null, null);
                     }
                 }
 
@@ -374,9 +371,10 @@ namespace Easytl.CommunicationHelper
                 {
                     foreach (EventHandler<ReciveEventArgs> deleg in ReciveData.GetInvocationList())
                     {
-                        deleg.BeginInvoke(token, re, null, null);
+                        deleg.BeginInvoke(this, re, null, null);
                     }
                 }
+                reciveCommand(token, re);
 
                 bool willRaiseEvent = token.Socket.ReceiveAsync(e);
                 if (!willRaiseEvent)
@@ -418,7 +416,7 @@ namespace Easytl.CommunicationHelper
             {
                 foreach (EventHandler<ConnectEventArgs> deleg in ConnectStateChanged.GetInvocationList())
                 {
-                    deleg.BeginInvoke(readEventArg.UserToken, new ConnectEventArgs() { Connect = false }, null, null);
+                    deleg.BeginInvoke(this, new ConnectEventArgs() { Connect = false }, null, null);
                 }
             }
 
@@ -433,7 +431,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 断开连接
         /// </summary>
-        public void DisConnect()
+        public virtual void DisConnect()
         {
             m_reconnect = false;
             try

@@ -59,7 +59,7 @@
             接收协议发生异常时触发事件
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.TCPClient.reciveCommand(Easytl.CommunicationHelper.AsyncUserToken,Easytl.CommunicationHelper.ReciveEventArgs)">
+        <member name="M:Easytl.CommunicationHelper.TCPClient.reciveCommand(System.Object,Easytl.CommunicationHelper.ReciveEventArgs)">
             <summary>
             接收协议
             </summary>
@@ -612,11 +612,11 @@
             <param name="StartYear">计算开始日期</param>
             <returns></returns>
         </member>
-        <member name="M:Easytl.THelper.DateTimeToB4Str16(System.DateTime,System.Int32)">
+        <member name="M:Easytl.THelper.DateToB4Str16(System.DateTime,System.Int32)">
             <summary>
             日期和时间转化为(16进制)4字节字符串（默认支持最大日期到2063年）
             </summary>
-            <param name="datetime">日期和时间</param>
+            <param name="date">日期和时间</param>
             <param name="StartYear">计算开始日期</param>
             <returns></returns>
         </member>
@@ -754,7 +754,7 @@
             获取本地IPv4地址
             </summary>
         </member>
-        <member name="M:Easytl.THelper.GetTimestamp(System.Boolean,System.String,System.Boolean)">
+        <member name="M:Easytl.THelper.GetTimestamp(System.Boolean,System.String)">
             <summary>
             获取时间戳
             </summary>

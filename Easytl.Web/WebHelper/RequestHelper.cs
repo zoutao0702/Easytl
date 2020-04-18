@@ -201,9 +201,9 @@ namespace Easytl.Web.WebHelper
         {
             PropertyInfo[] properties;
             if (bindingAttr == BindingFlags.Public)
-                properties = typeof(T).GetProperties();
+                properties = values.GetType().GetProperties();
             else
-                properties = typeof(T).GetProperties(bindingAttr);
+                properties = values.GetType().GetProperties(bindingAttr);
 
             NameValueCollection nameValueCollection = new NameValueCollection();
             for (int i = 0; i < properties.Length; i++)
@@ -242,24 +242,24 @@ namespace Easytl.Web.WebHelper
                     }
                 }
                 httpWebRequest.Method = "POST";
+                httpWebRequest.Accept = "*/*";
                 httpWebRequest.Timeout = timeout;
+                httpWebRequest.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.NoCacheNoStore);
                 httpWebRequest.ReadWriteTimeout = timeout;
+
                 if (string.IsNullOrEmpty(boundary))
-                    boundary = "---------------" + DateTime.Now.Ticks.ToString("x");
+                    boundary = string.Format("----WebKitFormBoundary{0}", THelper.GetRandomString(15));
+                httpWebRequest.ContentType = string.Format("multipart/form-data; boundary={0}", boundary);
 
-                string Enter = "\r\n";
-                httpWebRequest.ContentType = "multipart/form-data;charset=" + encoding.WebName + ";boundary=" + boundary;
                 Stream requestStream = httpWebRequest.GetRequestStream();
-
+                string Enter = "\r\n";
                 string Str;
                 byte[] bytes;
                 if (values.Count > 0)
                 {
                     foreach (string key in values.Keys)
                     {
-                        Str = "--" + boundary + Enter
-                            + "Content-Disposition: form-data; name=\"" + key + "\"" + Enter + Enter
-                            + values[key] + Enter;
+                        Str = string.Format("--{0}{1}Content-Disposition: form-data; name=\"{2}\"{1}{1}{3}{1}", boundary, Enter, key, values[key]);
 
                         bytes = encoding.GetBytes(Str);
                         requestStream.Write(bytes, 0, bytes.Length);
@@ -270,20 +270,20 @@ namespace Easytl.Web.WebHelper
                 {
                     foreach (PostUploadFile file in files)
                     {
-                        Str = "--" + boundary + Enter
-                            + "Content-Disposition: form-data; name=\"" + file.FieldName + "\"; filename=\"" + file.FileName + "\"" + Enter;
+                        Str = string.Format("--{0}{1}Content-Disposition: form-data; name=\"{2}\"; filename=\"{3}\"{1}", boundary, Enter, file.FieldName, file.FileName);
 
                         if (!string.IsNullOrEmpty(file.ContentType))
-                            Str += "Content-Type:" + file.ContentType + Enter;
+                            Str += string.Format("Content-Type:{0}{1}{1}", file.ContentType, Enter);
 
-                        Str += Enter;
                         bytes = encoding.GetBytes(Str);
                         requestStream.Write(bytes, 0, bytes.Length);
                         requestStream.Write(file.Content, 0, file.ContentLength);
+                        bytes = encoding.GetBytes(Enter);
+                        requestStream.Write(bytes, 0, bytes.Length);
                     }
                 }
 
-                Str = Enter + "--" + boundary + "--";
+                Str = string.Format("--{0}--", boundary);
                 bytes = encoding.GetBytes(Str);
                 requestStream.Write(bytes, 0, bytes.Length);
                 requestStream.Close();
@@ -337,9 +337,9 @@ namespace Easytl.Web.WebHelper
         {
             PropertyInfo[] properties;
             if (bindingAttr == BindingFlags.Public)
-                properties = typeof(T).GetProperties();
+                properties = values.GetType().GetProperties();
             else
-                properties = typeof(T).GetProperties(bindingAttr);
+                properties = values.GetType().GetProperties(bindingAttr);
 
             NameValueCollection nameValueCollection = new NameValueCollection();
             for (int i = 0; i < properties.Length; i++)

@@ -28,7 +28,7 @@ namespace Easytl.CommunicationHelper
         /// <summary>
         /// 协议头
         /// </summary>
-        public virtual string CommandHead { get; } = string.Empty;
+        protected virtual string CommandHead { get; } = string.Empty;
 
         #endregion
 
@@ -91,15 +91,15 @@ namespace Easytl.CommunicationHelper
         /// 获取协议长度
         /// </summary>
         /// <param name="Command">协议</param>
-        /// <returns>返回协议长度</returns>
-        public abstract int GetCommandLength(string Command);
+        /// <returns>返回协议长度（16进制字符串总长度）</returns>
+        protected abstract int GetCommandLength(string Command);
 
         /// <summary>
         /// 发送数据
         /// </summary>
         /// <param name="remote">要发送的客户端</param>
         /// <param name="Data">要发送的数据</param>
-        public void Send(IPEndPoint remote, byte[] Data)
+        public virtual void Send(IPEndPoint remote, byte[] Data)
         {
             try
             {
@@ -208,7 +208,7 @@ namespace Easytl.CommunicationHelper
         /// 开始侦听
         /// </summary>
         /// <param name="port">端口号</param>
-        public void Start(int port)
+        public virtual void Start(int port)
         {
             Port = port;
 

@@ -26,16 +26,5 @@ namespace Easytl.WF
                     MyForm.Show(Owner);
             }
         }
-
-        /// <summary>
-        /// 执行方法
-        /// </summary>
-        public static void InvokeT(this Form MyForm, Action action)
-        {
-            if (MyForm.InvokeRequired)
-                MyForm.Invoke(action);
-            else
-                action.Invoke();
-        }
     }
 }

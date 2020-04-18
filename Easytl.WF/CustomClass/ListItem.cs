@@ -10,46 +10,25 @@ namespace Easytl.WF.CustomClass
     [Serializable]
     public class ListItem
     {
-        private string text = string.Empty;
-        private string value = string.Empty;
-
         public ListItem()
         { }
 
-        public ListItem(string _text, string _value)
+        public ListItem(string text, string value)
         {
-            text = _text;
-            value = _value;
+            Text = text;
+            Value = value;
         }
 
         public override string ToString()
         {
-            return this.text;
+            return this.Text;
         }
 
-        public string Value
-        {
-            get
-            {
-                return this.value;
-            }
-            set
-            {
-                this.value = value;
-            }
-        }
+        public string Text { get; set; }
 
-        public string Text
-        {
-            get
-            {
-                return this.text;
-            }
-            set
-            {
-                this.text = value;
-            }
-        }
+        public string Value { get; set; }
+
+        public object Tag { get; set; }
     }
 }
 

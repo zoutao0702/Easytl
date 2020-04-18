@@ -21,4 +21,5 @@ D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\zh-Hans\System.Web.WebPages.resources
 D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\zh-Hans\System.Web.WebPages.Deployment.resources.dll
 D:\Code\Easytl\Easytl\Easytl.Web\obj\Debug\Easytl.Web.dll
 D:\Code\Easytl\Easytl\Easytl.Web\obj\Debug\Easytl.Web.pdb
+D:\Code\Easytl\Easytl\Easytl.Web\bin\Debug\Easytl.xml
 D:\Code\Easytl\Easytl\Easytl.Web\obj\Debug\Easytl.Web.csprojResolveAssemblyReference.cache
