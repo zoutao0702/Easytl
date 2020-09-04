@@ -326,8 +326,10 @@ namespace Easytl.CommunicationHelper
 
                 if (m_reconnect)
                 {
-                    Thread.Sleep(ReConnectInterval * 1000);
-                    Connect();
+                    Task.Run(() => { 
+                        Thread.Sleep(ReConnectInterval * 1000);
+                        Connect();
+                    });
                 }
             }
         }
@@ -422,9 +424,11 @@ namespace Easytl.CommunicationHelper
 
             if (m_reconnect)
             {
-                Thread.Sleep(ReConnectInterval * 1000);
-                if (m_reconnect)
-                    Connect();
+                Task.Run(() => { 
+                    Thread.Sleep(ReConnectInterval * 1000);
+                    if (m_reconnect)
+                        Connect();
+                });
             }
         }
 

@@ -59,7 +59,7 @@
             接收协议发生异常时触发事件
             </summary>
         </member>
-        <member name="M:Easytl.CommunicationHelper.TCPClient.reciveCommand(System.Object,Easytl.CommunicationHelper.ReciveEventArgs)">
+        <member name="M:Easytl.CommunicationHelper.TCPClient.reciveCommand(Easytl.CommunicationHelper.AsyncUserToken,Easytl.CommunicationHelper.ReciveEventArgs)">
             <summary>
             接收协议
             </summary>
@@ -179,6 +179,92 @@
         <member name="M:Easytl.CommunicationHelper.CommandHepler.AnalyCommand(System.String,System.Func{System.String,System.Int32},System.Text.StringBuilder@)">
             <summary>
             分析接收到的协议数据，并把它转为正确的一条协议输出
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.TCPClientET">
+            <summary>
+            TCPClientET
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.IP">
+            <summary>
+            服务端IP地址
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.Port">
+            <summary>
+            服务端端口号
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.Connected">
+            <summary>
+            连接状态
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClientET.ConnectStateChanged">
+            <summary>
+            连接状态改变事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClientET.ReciveData">
+            <summary>
+            接收到数据事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClientET.ReciveDataHex">
+            <summary>
+            接收到数据事件
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.CommandLenIndex">
+            <summary>
+            协议长度字段位置
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.CommandLenLength">
+            <summary>
+            协议长度字段长度（字节数）
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.Connect(System.String,System.Int32)">
+            <summary>
+            连接远程端
+            </summary>
+            <param name="ip"></param>
+            <param name="port"></param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.GetDataAllLength(System.Byte[])">
+            <summary>
+            获取协议总长度
+            </summary>
+            <param name="DataLen">根据协议长度索引和字节数截取到的表示协议内部长度的字节数组</param>
+            <returns>返回协议总长度</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="Data">要发送的数据</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.Send(System.String)">
+            <summary>
+            发送协议
+            </summary>
+            <param name="Command">16进制协议字符串</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.DisConnect(System.Boolean)">
+            <summary>
+            断开连接
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.ReciveHexEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.ReciveHexEventArgs.DataHex">
+            <summary>
+            hex
             </summary>
         </member>
         <member name="T:Easytl.CommunicationHelper.SerialPort">
@@ -464,6 +550,41 @@
             关闭所有连接并释放内存
             </summary>
         </member>
+        <member name="F:Easytl.Lunisolar.ChineseCalendar">
+            <summary>
+             实例化一个 ChineseLunisolarCalendar
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.tg">
+            <summary>
+             十天干
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.dz">
+            <summary>
+             十二地支
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.sx">
+            <summary>
+             十二生肖
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetLunisolarYear(System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "F:Easytl.Lunisolar.months" -->
+        <member name="F:Easytl.Lunisolar.days1">
+            <summary>
+             农历日
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.days">
+            <summary>
+             农历日
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetLunisolarMonth(System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetLunisolarDay(System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetChineseDateTime(System.DateTime,System.Boolean,System.Boolean,System.Boolean)" -->
         <member name="P:Easytl.Semaphore.SurplusCount">
             <summary>
             剩余信号量
@@ -612,11 +733,11 @@
             <param name="StartYear">计算开始日期</param>
             <returns></returns>
         </member>
-        <member name="M:Easytl.THelper.DateToB4Str16(System.DateTime,System.Int32)">
+        <member name="M:Easytl.THelper.DateTimeToB4Str16(System.DateTime,System.Int32)">
             <summary>
             日期和时间转化为(16进制)4字节字符串（默认支持最大日期到2063年）
             </summary>
-            <param name="date">日期和时间</param>
+            <param name="datetime">日期和时间</param>
             <param name="StartYear">计算开始日期</param>
             <returns></returns>
         </member>
@@ -754,7 +875,7 @@
             获取本地IPv4地址
             </summary>
         </member>
-        <member name="M:Easytl.THelper.GetTimestamp(System.Boolean,System.String)">
+        <member name="M:Easytl.THelper.GetTimestamp(System.Boolean,System.String,System.Boolean)">
             <summary>
             获取时间戳
             </summary>
@@ -803,6 +924,11 @@
         <member name="M:Easytl.THelper.RunCmd(System.String,System.String@,System.String,System.String)">
             <summary>
             运行CMD程序
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            获取属性名称
             </summary>
         </member>
         <member name="T:Easytl.SafeHelper.BlowFishCryptoServiceProvider">

@@ -57,6 +57,8 @@
   <ItemGroup>
     <Compile Include="CommunicationHelper\AsyncUserToken.cs" />
     <Compile Include="CommunicationHelper\TCPClient.cs" />
+    <Compile Include="CommunicationHelper\TCPClientET.cs" />
+    <Compile Include="Lunisolar.cs" />
     <Compile Include="Semaphore.cs" />
     <Compile Include="SignHelper\SignHelper.cs" />
     <Compile Include="THelper.cs" />

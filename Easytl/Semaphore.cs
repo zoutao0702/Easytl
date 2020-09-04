@@ -43,5 +43,15 @@ namespace Easytl
             else
                 return MaximumCount;
         }
+
+        public void Close()
+        {
+            Sem.Close();
+        }
+
+        public void Dispose()
+        {
+            Sem.Dispose();
+        }
     }
 }

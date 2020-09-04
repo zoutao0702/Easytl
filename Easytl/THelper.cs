@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.IO;
 using System.Diagnostics;
 
@@ -858,7 +859,7 @@ namespace Easytl
         /// </summary>
         public static void SetConnectionString(string Name, string ConnectionString, bool Refresh = true)
         {
-            SetConnectionString(Name, ConnectionString, System.Configuration.ConfigurationManager.ConnectionStrings[Name].ProviderName, Refresh);
+            SetConnectionString(Name, ConnectionString, System.Configuration.ConfigurationManager.ConnectionStrings[Name]?.ProviderName, Refresh);
         }
 
         /// <summary>
@@ -999,6 +1000,22 @@ namespace Easytl
             p.Close();
 
             return strOuput;
+        }
+
+        /// <summary>
+        /// 获取属性名称
+        /// </summary>
+        public static string GetPropertyName<T>(Expression<Func<T, object>> expr)
+        {
+            var rtn = "";
+            if (expr.Body is UnaryExpression)
+                rtn = ((MemberExpression)((UnaryExpression)expr.Body).Operand).Member.Name;
+            else if (expr.Body is MemberExpression)
+                rtn = ((MemberExpression)expr.Body).Member.Name;
+            else if (expr.Body is ParameterExpression)
+                rtn = ((ParameterExpression)expr.Body).Type.Name;
+
+            return rtn;
         }
     }
 }

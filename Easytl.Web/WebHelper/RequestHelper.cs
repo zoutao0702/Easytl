@@ -88,8 +88,31 @@ namespace Easytl.Web.WebHelper
         {
             try
             {
-                HttpWebRequest myRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+                string Method = "GET";
+                switch (requestType)
+                {
+                    case RequestType.NoKown:
+                        goto case RequestType.Get;
+                    case RequestType.Get:
+                        Method = "GET";
+                        if (!string.IsNullOrEmpty(dataStr))
+                        {
+                            url = string.Concat(url, "?", dataStr);
+                            dataStr = string.Empty;
+                        }
+                        break;
+                    case RequestType.Post:
+                        Method = "POST";
+                        break;
+                    case RequestType.Put:
+                        Method = "PUT";
+                        break;
+                    case RequestType.Delete:
+                        Method = "DELETE";
+                        break;
+                }
 
+                HttpWebRequest myRequest = (HttpWebRequest)HttpWebRequest.Create(url);
                 if (headers != null)
                 {
                     foreach (string key in headers.Keys)
@@ -97,30 +120,10 @@ namespace Easytl.Web.WebHelper
                         myRequest.Headers.Add(key, headers[key]);
                     }
                 }
-
-                switch (requestType)
-                {
-                    case RequestType.NoKown:
-                        myRequest.Method = "GET";
-                        break;
-                    case RequestType.Get:
-                        myRequest.Method = "GET";
-                        break;
-                    case RequestType.Post:
-                        myRequest.Method = "POST";
-                        break;
-                    case RequestType.Put:
-                        myRequest.Method = "PUT";
-                        break;
-                    case RequestType.Delete:
-                        myRequest.Method = "DELETE";
-                        break;
-                }
-
+                myRequest.Method = Method;
                 myRequest.Timeout = timeout;
                 myRequest.ReadWriteTimeout = timeout;
                 myRequest.ContentType = contentType;
-
                 if (!string.IsNullOrEmpty(dataStr))
                 {
                     byte[] data = Encoding.GetEncoding(encodingType).GetBytes(dataStr);
@@ -174,6 +177,58 @@ namespace Easytl.Web.WebHelper
 
 
         /// <summary>
+        /// 模拟http请求（application/x-www-form-urlencoded）
+        /// </summary>
+        public static string HttpRequest_Get(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, NameValueCollection values, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000)
+        {
+            string dataStr = string.Empty;
+            if (values.Count > 0)
+            {
+                foreach (string key in values.Keys)
+                {
+                    if (!string.IsNullOrEmpty(dataStr))
+                        dataStr += "&";
+
+                    dataStr += key + "=" + values[key];
+                }
+            }
+
+            return HttpRequest(RequestType.Get, out OpStatusCode, out OpStatusDescription, url, dataStr, headers, "application/x-www-form-urlencoded;charset=" + Encoding.GetEncoding(encodingType).WebName, encodingType, timeout);
+        }
+
+
+        /// <summary>
+        /// 模拟http请求（application/x-www-form-urlencoded）
+        /// </summary>
+        public static string HttpRequest_Get_T<T>(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, T values, BindingFlags bindingAttr = BindingFlags.Public, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000)
+        {
+            PropertyInfo[] properties;
+            if (bindingAttr == BindingFlags.Public)
+                properties = values.GetType().GetProperties();
+            else
+                properties = values.GetType().GetProperties(bindingAttr);
+
+            NameValueCollection nameValueCollection = new NameValueCollection();
+            for (int i = 0; i < properties.Length; i++)
+            {
+                PropertyInfo propertyInfo = properties[i];
+                if (propertyInfo.CanRead)
+                {
+                    object value = propertyInfo.GetValue(values, null);
+                    if (value != null)
+                    {
+                        if (propertyInfo.PropertyType.IsEnum)
+                            nameValueCollection.Add(propertyInfo.Name, Convert.ToInt32(value).ToString());
+                        else
+                            nameValueCollection.Add(propertyInfo.Name, value.ToString());
+                    }
+                }
+            }
+            return HttpRequest_Get(out OpStatusCode, out OpStatusDescription, url, nameValueCollection, headers, encodingType, timeout);
+        }
+
+
+        /// <summary>
         /// 模拟http/post请求（application/x-www-form-urlencoded）
         /// </summary>
         public static string HttpRequest_Post(out HttpStatusCode OpStatusCode, out string OpStatusDescription, string url, NameValueCollection values, NameValueCollection headers = null, string encodingType = "UTF-8", int timeout = 10000)
@@ -221,7 +276,7 @@ namespace Easytl.Web.WebHelper
                     }
                 }
             }
-            return RequestHelper.HttpRequest_Post(out OpStatusCode, out OpStatusDescription, url, nameValueCollection, headers, encodingType, timeout);
+            return HttpRequest_Post(out OpStatusCode, out OpStatusDescription, url, nameValueCollection, headers, encodingType, timeout);
         }
 
 
@@ -504,7 +559,7 @@ namespace Easytl.Web.WebHelper
             string Html = string.Empty;//初始化新的webRequst
             HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(url);
 
-            Request.KeepAlive = true;
+            //Request.KeepAlive = true;
             Request.ProtocolVersion = HttpVersion.Version11;
             Request.Method = "GET";
             Request.Accept = "*/* ";

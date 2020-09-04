@@ -34,3 +34,4 @@ D:\Code\Easytl\Easytl\Easytl\bin\Debug\Easytl.dll
 D:\Code\Easytl\Easytl\Easytl\bin\Debug\Easytl.pdb
 D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.dll
 D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.pdb
+D:\Code\Easytl\Easytl\Easytl\obj\Debug\Easytl.csprojResolveAssemblyReference.cache
