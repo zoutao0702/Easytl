@@ -5,7 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Easytl.Web.WebControllers
+namespace Easytl.WebControllers
 {
     /// <summary>
     /// 自定义控制器分页基类

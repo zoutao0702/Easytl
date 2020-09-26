@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Easytl.Web.WebControllers
+namespace Easytl.WebControllers
 {
     /// <summary>
     /// 请求前检查是否需要特殊验证

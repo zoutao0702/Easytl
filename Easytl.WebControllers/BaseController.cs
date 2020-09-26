@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Easytl.Web;
 using Easytl.Web.WebHelper;
 
-namespace Easytl.Web.WebControllers
+namespace Easytl.WebControllers
 {
     /// <summary>
     /// 自定义控制器基类
@@ -180,7 +180,7 @@ namespace Easytl.Web.WebControllers
         {
             get
             {
-                string PreviousPageUrlValue = WebHelper.WebHelper.GetCookieValue(PreviousPageName);
+                string PreviousPageUrlValue = WebHelper.GetCookieValue(PreviousPageName);
                 if (!string.IsNullOrEmpty(PreviousPageUrlValue))
                 {
                     return PreviousPageUrlValue;
@@ -203,7 +203,7 @@ namespace Easytl.Web.WebControllers
                 }
                 if (!IsContain)
                 {
-                    WebHelper.WebHelper.SetCookieValue(PreviousPageName, value, DateTime.Today.AddDays(1));
+                    WebHelper.SetCookieValue(PreviousPageName, value, DateTime.Today.AddDays(1));
                 }
             }
         }
@@ -345,7 +345,7 @@ namespace Easytl.Web.WebControllers
                     {
                         Cookie_ModelPros.Add("LoginPwd", Model_T_Type.GetProperty(Cookie_LoginPwd_ModelProName).GetValue(model, null).ToString());
                     }
-                    WebHelper.WebHelper.SetCookie(Cookie_Login_Adr, Cookie_ModelPros, DateTime.Now.AddDays(Cookie_Login_Expires));
+                    WebHelper.SetCookie(Cookie_Login_Adr, Cookie_ModelPros, DateTime.Now.AddDays(Cookie_Login_Expires));
                 }
                 else
                 {
@@ -369,7 +369,7 @@ namespace Easytl.Web.WebControllers
             {
                 if (!string.IsNullOrEmpty(Cookie_LoginName_ModelProName))
                 {
-                    System.Collections.Specialized.NameValueCollection CookieValues = WebHelper.WebHelper.GetCookie(Cookie_Login_Adr);
+                    System.Collections.Specialized.NameValueCollection CookieValues = WebHelper.GetCookie(Cookie_Login_Adr);
                     if (CookieValues != null)
                     {
                         model = System.Activator.CreateInstance<Model_T>();
@@ -400,7 +400,7 @@ namespace Easytl.Web.WebControllers
         {
             if (!string.IsNullOrEmpty(Cookie_Login_Adr))
             {
-                WebHelper.WebHelper.ClearCookie(Cookie_Login_Adr);
+                WebHelper.ClearCookie(Cookie_Login_Adr);
             }
         }
 

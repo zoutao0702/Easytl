@@ -1,0 +1,1430 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Easytl</name>
+    </assembly>
+    <members>
+        <member name="T:Easytl.CommunicationHelper.AsyncUserToken">
+            <summary>
+            异步客户端类
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.AsyncUserToken.RemoteEndPoint">
+            <summary>  
+            远程地址  
+            </summary>  
+        </member>
+        <member name="P:Easytl.CommunicationHelper.AsyncUserToken.Socket">
+            <summary>  
+            通信SOKET  
+            </summary>  
+        </member>
+        <member name="P:Easytl.CommunicationHelper.AsyncUserToken.ConnectTime">
+            <summary>  
+            连接时间  
+            </summary>  
+        </member>
+        <member name="F:Easytl.CommunicationHelper.AsyncUserToken.CommandString">
+            <summary>  
+            协议缓存区  
+            </summary>  
+        </member>
+        <member name="M:Easytl.CommunicationHelper.AsyncUserToken.#ctor">
+            <summary>
+            实例化
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.TCPClient">
+            <summary>
+            TCP客户端操作类
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.Connected">
+            <summary>
+            获取到远程主机的连接状态
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.CommandHead">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClient.ReciveCommand">
+            <summary>
+            接收到完整协议时触发事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClient.ReciveCommandException">
+            <summary>
+            接收协议发生异常时触发事件
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.reciveCommand(Easytl.CommunicationHelper.AsyncUserToken,Easytl.CommunicationHelper.ReciveEventArgs)">
+            <summary>
+            接收协议
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.GetCommandLength(System.String)">
+            <summary>
+            获取协议长度
+            </summary>
+            <param name="Command">协议</param>
+            <returns>返回协议长度（16进制字符串总长度）</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="Data">要发送的数据</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.Send(System.String)">
+            <summary>
+            发送协议
+            </summary>
+            <param name="Command">16进制协议字符串</param>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.IP">
+            <summary>
+            远程地址
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.Port">
+            <summary>
+            远程端口号
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.ReConnectInterval">
+            <summary>
+            重连时间间隔（秒）
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClient.ConnectTimeOut">
+            <summary>
+            连接超时时长（秒）
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClient.ConnectStateChanged">
+            <summary>
+            连接状态改变事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClient.ConnectException">
+            <summary>
+            连接异常事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClient.ReciveData">
+            <summary>
+            接收到数据事件
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.#ctor(System.String,System.Int32,System.Int32)">
+            <summary>
+            实例化
+            </summary>
+            <param name="ip">远程地址</param>
+            <param name="port">远程端口</param>
+            <param name="receiveBufferSize">缓冲区大小</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.#ctor(System.Int32)">
+            <summary>
+            实例化
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.Connect">
+            <summary>
+            连接
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.Connect(System.String,System.Int32)">
+            <summary>
+            连接
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClient.DisConnect">
+            <summary>
+            断开连接
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.ConnectEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.ConnectEventArgs.Connect">
+            <summary>
+            连接状态
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.ReciveEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.ReciveEventArgs.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.ReciveCommandEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.ReciveCommandEventArgs.Command">
+            <summary>
+            协议
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.CommandHepler.AnalyCommand(System.String,System.Func{System.String,System.Int32},System.Text.StringBuilder@)">
+            <summary>
+            分析接收到的协议数据，并把它转为正确的一条协议输出
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.TCPClientET">
+            <summary>
+            TCPClientET
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.IP">
+            <summary>
+            服务端IP地址
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.Port">
+            <summary>
+            服务端端口号
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.Connected">
+            <summary>
+            连接状态
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClientET.ConnectStateChanged">
+            <summary>
+            连接状态改变事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClientET.ReciveData">
+            <summary>
+            接收到数据事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPClientET.ReciveDataHex">
+            <summary>
+            接收到数据事件
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.CommandLenIndex">
+            <summary>
+            协议长度字段位置
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPClientET.CommandLenLength">
+            <summary>
+            协议长度字段长度（字节数）
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.Connect(System.String,System.Int32)">
+            <summary>
+            连接远程端
+            </summary>
+            <param name="ip"></param>
+            <param name="port"></param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.GetDataAllLength(System.Byte[])">
+            <summary>
+            获取协议总长度
+            </summary>
+            <param name="DataLen">根据协议长度索引和字节数截取到的表示协议内部长度的字节数组</param>
+            <returns>返回协议总长度</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.Send(System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="Data">要发送的数据</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.Send(System.String)">
+            <summary>
+            发送协议
+            </summary>
+            <param name="Command">16进制协议字符串</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPClientET.DisConnect(System.Boolean)">
+            <summary>
+            断开连接
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.ReciveHexEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.ReciveHexEventArgs.DataHex">
+            <summary>
+            hex
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.SerialPort">
+            <summary>
+            串口操作类
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.COM">
+            <summary>
+            获取COM串口号
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.BaudRate">
+            <summary>
+            获取波特率
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.IsOpen">
+            <summary>
+            串口是否已打开
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.ReConnection">
+            <summary>
+            是否开启重连
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.Command_Head">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.SerialPort.Command_MinLen">
+            <summary>
+            协议最小长度
+            </summary>
+        </member>
+        <member name="F:Easytl.CommunicationHelper.SerialPort._SerialPort">
+            <summary>
+            COM连接
+            </summary>
+        </member>
+        <member name="F:Easytl.CommunicationHelper.SerialPort.ReciveMessage">
+            <summary>
+            缓冲区字符串
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.SerialPort.Data_Recive_Event">
+            <summary>
+            接收到数据时触发事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.SerialPort.Exception_Event">
+            <summary>
+            发生异常时触发事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.SerialPort.Open_Event">
+            <summary>
+            串口打开时触发事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.SerialPort.Close_Event">
+            <summary>
+            串口关闭时触发事件
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.#ctor">
+            <summary>
+            SerialPort实例化
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.#ctor(System.Int32,System.Int32)">
+            <summary>
+            SerialPort实例化
+            </summary>
+            <param name="com">绑定的本机接收串口号</param>
+            <param name="baudRate">波特率</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Open">
+            <summary>
+            打开串口
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.ReConn">
+            <summary>
+            串口重连
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Recive">
+            <summary>
+            接收数据
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Body_Len(System.String)">
+            <summary>
+            获取协议内容长度（若重写了AnalyCommand方法，则该方法无效）
+            </summary>
+            <param name="Command_Min">最小长度的协议</param>
+            <returns>返回协议内容长度</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.AnalyCommand(System.String@)">
+            <summary>
+            分析接收到的协议数据，并把它转为正确的一条协议输出，返回应清除的协议数据长度
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Send(System.String)">
+            <summary>
+            发送数据
+            </summary>
+            <param name="Data">16进制字符串</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.SerialPort.Close">
+            <summary>
+            关闭串口
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.PortHelper">
+            <summary>
+            端口操作类
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.PortHelper.PortInUse(System.Int32)">
+            <summary>
+            检测端口是否正在使用
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.PortHelper.GetCanUsePort(System.Int32,System.Int32)">
+            <summary>
+            在范围内获取一个可使用的端口号
+            </summary>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.UDPClient">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.UDPClient.Port">
+            <summary>
+            本地UDP端口
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.UDPClient.CommandHead">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.UDPClient.ReciveCommand">
+            <summary>
+            接收到完整协议时触发事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.UDPClient.ReciveCommandException">
+            <summary>
+            接收协议发生异常时触发事件
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.reciveCommand(System.Object,Easytl.CommunicationHelper.ReciveEventArgs)">
+            <summary>
+            接收协议
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.GetCommandLength(System.String)">
+            <summary>
+            获取协议长度
+            </summary>
+            <param name="Command">协议</param>
+            <returns>返回协议长度（16进制字符串总长度）</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.Send(System.Net.IPEndPoint,System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="remote">要发送的客户端</param>
+            <param name="Data">要发送的数据</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.Send(System.Net.IPEndPoint,System.String)">
+            <summary>
+            发送协议
+            </summary>
+            <param name="remote">要发送的客户端</param>
+            <param name="Command">16进制协议字符串</param>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.UDPClient.ReciveData">
+            <summary>
+            接收到数据事件
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.#ctor(System.Int32)">
+            <summary>
+            实例化
+            </summary>
+            <param name="receiveBufferSize">数据缓冲区</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.UDPClient.Start(System.Int32)">
+            <summary>
+            开始侦听
+            </summary>
+            <param name="port">端口号</param>
+        </member>
+        <member name="T:Easytl.CommunicationHelper.TCPServer">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPServer.ClientList">
+            <summary>  
+            客户端列表  
+            </summary>  
+        </member>
+        <member name="P:Easytl.CommunicationHelper.TCPServer.CommandHead">
+            <summary>
+            协议头
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPServer.ReciveCommand">
+            <summary>
+            接收到协议时触发事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPServer.ReciveCommandException">
+            <summary>
+            接收协议异常时触发事件
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.reciveCommand(System.Object,Easytl.CommunicationHelper.ReciveEventArgs)">
+            <summary>
+            接收数据
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.GetCommandLength(System.String)">
+            <summary>
+            获取协议内容长度
+            </summary>
+            <param name="Command">最小长度的协议</param>
+            <returns>返回协议内容长度（16进制字符串总长度）</returns>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.Send(Easytl.CommunicationHelper.AsyncUserToken,System.Byte[])">
+            <summary>
+            发送数据
+            </summary>
+            <param name="token">要发送的客户端</param>
+            <param name="Data">要发送的数据</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.Send(Easytl.CommunicationHelper.AsyncUserToken,System.String)">
+            <summary>
+            发送协议
+            </summary>
+            <param name="token">要发送的客户端</param>
+            <param name="Command">16进制协议字符串</param>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPServer.ConnectStateChanged">
+            <summary>
+            连接状态改变事件
+            </summary>
+        </member>
+        <member name="E:Easytl.CommunicationHelper.TCPServer.ReciveData">
+            <summary>
+            接收到数据事件
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.#ctor(System.Int32,System.Int32)">
+            <summary>
+            实例化
+            </summary>
+            <param name="numConnections">最大连接数</param>
+            <param name="receiveBufferSize"></param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.Start(System.String,System.Int32)">
+            <summary>
+            开始侦听
+            </summary>
+            <param name="ip">本地侦听IP</param>
+            <param name="port">本地侦听端口</param>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.DisConnect(Easytl.CommunicationHelper.AsyncUserToken)">
+            <summary>
+            断开连接
+            </summary>
+        </member>
+        <member name="M:Easytl.CommunicationHelper.TCPServer.Stop">
+            <summary>
+            关闭所有连接并释放内存
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.ChineseCalendar">
+            <summary>
+             实例化一个 ChineseLunisolarCalendar
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.tg">
+            <summary>
+             十天干
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.dz">
+            <summary>
+             十二地支
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.sx">
+            <summary>
+             十二生肖
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetLunisolarYear(System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "F:Easytl.Lunisolar.months" -->
+        <member name="F:Easytl.Lunisolar.days1">
+            <summary>
+             农历日
+            </summary>
+        </member>
+        <member name="F:Easytl.Lunisolar.days">
+            <summary>
+             农历日
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetLunisolarMonth(System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetLunisolarDay(System.Int32)" -->
+        <!-- Badly formed XML comment ignored for member "M:Easytl.Lunisolar.GetChineseDateTime(System.DateTime,System.Boolean,System.Boolean,System.Boolean)" -->
+        <member name="P:Easytl.Semaphore.SurplusCount">
+            <summary>
+            剩余信号量
+            </summary>
+        </member>
+        <member name="P:Easytl.Semaphore.MaximumCount">
+            <summary>
+            最大信号量
+            </summary>
+        </member>
+        <member name="T:Easytl.SignHelper.SignHelper">
+            <summary>
+            签名帮助类
+            </summary>
+        </member>
+        <member name="M:Easytl.SignHelper.SignHelper.GetStringSignTemp``1(``0,System.String,System.Boolean,System.StringComparison,System.String,System.Func{System.String,System.String,System.String},System.Nullable{System.Reflection.BindingFlags})">
+            <summary>
+            获取签名前拼接字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.SignHelper.SignHelper.GetStringSignTemp(System.Collections.Specialized.NameValueCollection,System.String,System.Boolean,System.StringComparison,System.String,System.Func{System.String,System.String,System.String})">
+            <summary>
+            获取签名前拼接字符串
+            </summary>
+        </member>
+        <member name="T:Easytl.SignHelper.SignHelper.RSASignHashAlgorithmType">
+            <summary>
+            RSA签名的哈希算法
+            </summary>
+        </member>
+        <member name="M:Easytl.SignHelper.SignHelper.CreateRSASign(Easytl.SafeHelper.EncryptionHelper.InOutParaType,System.String,System.String,Easytl.SignHelper.SignHelper.RSASignHashAlgorithmType,System.Text.Encoding)">
+            <summary>
+            RSA签名
+            </summary>
+            <param name="InOutParaType">输出的字符串类型</param>
+            <param name="PrivateKey">私钥</param>
+            <param name="HashbyteSignStr">待签名Hash字符串值</param>
+            <param name="HashAlgorithmType">签名算法</param>
+            <param name="Encode">字符串编码</param>
+        </member>
+        <member name="T:Easytl.SignHelper.StringComparer">
+            <summary>
+            一个用于比较键的 System.Collections.Generic.IComparer`1。
+            </summary>
+        </member>
+        <member name="P:Easytl.SignHelper.StringComparer.StrCompar">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Easytl.SignHelper.StringComparer.Compare(System.String,System.String)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Easytl.SignHelper.Attribute.NoSignAttribute">
+            <summary>
+            表示属性或字段不参与签名
+            </summary>
+        </member>
+        <member name="T:Easytl.THelper">
+            <summary>
+            各种格式转换类
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.R``1(``0@,System.Object[])">
+            <summary>
+            类实例化（方便重用）
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.C``1(System.Object,``0)">
+            <summary>
+            类型转换
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.ToSplitString``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.String)">
+            <summary>
+            返回以分隔符隔开的字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetEnumDescription(System.Enum,System.Boolean)">
+            <summary>
+            获取枚举值上的Description特性的说明
+            </summary>
+            <param name="EnumValue">枚举值</param>
+            <returns>特性的说明</returns>
+        </member>
+        <member name="M:Easytl.THelper.GetCustomAttribute``1(System.Reflection.MemberInfo)">
+            <summary>
+            获取自定义特性
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetCustomAttribute_FirstValue``1(System.Reflection.MemberInfo)">
+            <summary>
+            获取自定义属性的默认值
+            </summary>
+            <param name="EnumValue">自定义属性</param>
+            <returns>特性的说明</returns>
+        </member>
+        <member name="M:Easytl.THelper.ToXmlString``1(``0,System.Boolean,System.String,System.Reflection.BindingFlags)">
+            <summary>
+            将对象的属性和值转化为XML字符串
+            </summary>
+            <typeparam name="T">要转化的对象类型</typeparam>
+            <param name="obj">要转化的对象</param>
+            <param name="WriteNull">是否写入空值属性</param>
+            <param name="bindingAttr">一个位屏蔽，由一个或多个指定搜索执行方式的 System.Reflection.BindingFlags 组成。- 或 -零，以返回 null。</param>
+        </member>
+        <member name="M:Easytl.THelper.XmlToObject``1(System.String,System.String,System.Reflection.BindingFlags)">
+            <summary>
+            Xml转化为类
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.ToJsonString(System.Data.DataTable,System.Boolean)">
+            <summary>
+            将一个数据表转换成一个JSON字符串，在客户端可以直接转换成二维数组。
+            </summary>
+            <param name="source">需要转换的表。</param>
+            <returns>Json字符</returns>
+            <author>william</author>
+            <createtime>2011-7-1</createtime>
+            <remarks></remarks>      
+        </member>
+        <member name="M:Easytl.THelper.GetRandomString(System.Int32,System.Boolean,System.Boolean,System.Boolean,System.Boolean,System.String)">
+            <summary>
+            生成随机字符串 
+            </summary>
+            <param name="length">目标字符串的长度</param>
+            <param name="useNum">是否包含数字，1=包含，默认为包含</param>
+            <param name="useLow">是否包含小写字母，1=包含，默认为包含</param>
+            <param name="useUpp">是否包含大写字母，1=包含，默认为包含</param>
+            <param name="useSpe">是否包含特殊字符，1=包含，默认为不包含</param>
+            <param name="custom">要包含的自定义字符，直接输入要包含的字符列表</param>
+            <returns>指定长度的随机字符串</returns>
+        </member>
+        <member name="M:Easytl.THelper.CheckEmpty``1(``0,System.Collections.Generic.List{System.String})">
+            <summary>
+            检查是否有属性为空
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.DateToB2Str16(System.DateTime,System.Int32)">
+            <summary>
+            日期转化为(16进制)2字节字符串（默认支持最大日期到2063年）
+            </summary>
+            <param name="date">日期</param>
+            <param name="StartYear">计算开始日期</param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.DateTimeToB4Str16(System.DateTime,System.Int32)">
+            <summary>
+            日期和时间转化为(16进制)4字节字符串（默认支持最大日期到2063年）
+            </summary>
+            <param name="datetime">日期和时间</param>
+            <param name="StartYear">计算开始日期</param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.ByteToDate(System.String,System.Int32)">
+            <summary>
+            (16进制)2字节字符串转化为日期
+            </summary>
+            <param name="Bs">16进制2字节字符串</param>
+            <param name="startpoint">开始截取位置</param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.Byte4ToDate(System.String,System.Int32)">
+            <summary>
+            (16进制)4字节字符串转化为时间
+            </summary>
+            <param name="Bs">16进制4字节字符串</param>
+            <param name="startpoint">开始截取位置</param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.Str_Add0_Before(System.String,System.Int32)">
+            <summary>
+            字符串前补0
+            </summary>
+            <param name="b"></param>
+            <param name="blength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.Str_Add0_After(System.String,System.Int32)">
+            <summary>
+            字符串后补0
+            </summary>
+            <param name="b"></param>
+            <param name="blength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.Str_AddChar_Before(System.String,System.Int32,System.String)">
+            <summary>
+            字符串前补字符
+            </summary>
+            <param name="b"></param>
+            <param name="blength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.Str_AddChar_After(System.String,System.Int32,System.String)">
+            <summary>
+            字符串后补字符
+            </summary>
+            <param name="b"></param>
+            <param name="blength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.Str_GetContent(System.String,System.String,System.String)">
+            <summary>
+            获取两段字符中间的字符串
+            </summary>
+            <param name="b">字符串</param>
+            <param name="ContentStart">开始字符</param>
+            <param name="ContentEnd">截止字符</param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.Str16_To_Str2(System.String)">
+            <summary>
+            16进制字符串转换为2进制字符串
+            </summary>
+            <param name="Str16">16进制字符串</param>
+        </member>
+        <member name="M:Easytl.THelper.Str16_To_Bytes(System.String)">
+            <summary>
+            16进制字符串转换为10进制字节数组
+            </summary>
+            <param name="Str16">16进制字符串</param>
+        </member>
+        <member name="M:Easytl.THelper.Str2_To_Str16(System.String)">
+            <summary>
+            2进制字符串转换为16进制字符串
+            </summary>
+            <param name="Str2">2进制字符串</param>
+        </member>
+        <member name="M:Easytl.THelper.GetByteLength(System.Byte)">
+            <summary>
+            获取字节数
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetByteLength(System.Char)">
+            <summary>
+            获取字节数
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetByteLength(System.Int32)">
+            <summary>
+            获取字节数
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.StrReverse(System.String,System.Int32)">
+            <summary>
+            反转字符串
+            </summary>
+            <param name="Str">要反转的字符串</param>
+            <param name="ReverseNum">反转时的字符串个数</param>
+        </member>
+        <member name="M:Easytl.THelper.WeekEnToCh(System.DayOfWeek)">
+            <summary>
+            日期转换
+            </summary>
+            <param name="week"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.THelper.GetModel``2(``0)">
+            <summary>
+            将类的相同属性值赋予其他类
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetList``2(System.Collections.Generic.List{``0})">
+            <summary>
+            将类的相同属性值赋予其他类
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.IntToIPAdress(System.Int32)">
+            <summary>
+            将整形转为IP地址
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.IPAdressToInt(System.String)">
+            <summary>
+            将IP地址转为整形
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetHostIPv4(System.String)">
+            <summary>
+            获取本地IPv4地址
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetHostIPv4(System.String[])">
+            <summary>
+            获取本地IPv4地址
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetTimestamp(System.Boolean,System.String,System.Boolean)">
+            <summary>
+            获取时间戳
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetConnectionStrings(System.String)">
+            <summary>
+            获取ConnectionStrings连接字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.SetConnectionString(System.String,System.String,System.Boolean)">
+            <summary>
+            设置ConnectionString连接字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.SetConnectionString(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            设置ConnectionString连接字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetAppSettingValue(System.String)">
+            <summary>
+            获取AppSetting配置字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.SetAppSettingValue(System.String,System.String,System.Boolean)">
+            <summary>
+            设置AppSetting配置字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.CreateFolder(System.String)">
+            <summary>
+            创建文件夹
+            </summary>
+            <param name="DirectoryPath">文件夹路径</param>
+        </member>
+        <member name="M:Easytl.THelper.XOR(System.String)">
+            <summary>
+            异或
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.CRC16(System.String,System.UInt16,System.UInt16)">
+            <summary>
+            CRC16校验
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.RunCmd(System.String,System.String@,System.String,System.String)">
+            <summary>
+            运行CMD程序
+            </summary>
+        </member>
+        <member name="M:Easytl.THelper.GetPropertyName``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            获取属性名称
+            </summary>
+        </member>
+        <member name="T:Easytl.SafeHelper.BlowFishCryptoServiceProvider">
+            <summary>
+            BlowFish加密
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.#ctor(System.String)">
+            <summary>
+            Constructor for hex key
+            </summary>
+            <param name="hexKey">Cipher key as a hex string</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.#ctor(System.Byte[])">
+            <summary>
+            Constructor for byte key
+            </summary>
+            <param name="cipherKey">Cipher key as a byte array</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Encrypt_CBC(System.String)">
+            <summary>
+            Encrypts a string in CBC mode
+            </summary>
+            <param name="pt">Plaintext data to encrypt</param>
+            <returns>Ciphertext with IV appended to front</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Decrypt_CBC(System.String)">
+            <summary>
+            Decrypts a string in CBC mode
+            </summary>
+            <param name="ct">Ciphertext with IV appended to front</param>
+            <returns>Plaintext</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Decrypt_CBC(System.Byte[])">
+            <summary>
+            Decrypts a byte array in CBC mode.
+            IV must be created and saved manually.
+            </summary>
+            <param name="ct">Ciphertext data to decrypt</param>
+            <returns>Plaintext</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Encrypt_CBC(System.Byte[])">
+            <summary>
+            Encrypts a byte array in CBC mode.
+            IV must be created and saved manually.
+            </summary>
+            <param name="pt">Plaintext data to encrypt</param>
+            <returns>Ciphertext</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Encrypt_ECB(System.String)">
+            <summary>
+            Encrypt a string in ECB mode
+            </summary>
+            <param name="pt">Plaintext to encrypt as ascii string</param>
+            <returns>hex value of encrypted data</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Decrypt_ECB(System.String)">
+            <summary>
+            Decrypts a string (ECB)
+            </summary>
+            <param name="ct">hHex string of the ciphertext</param>
+            <returns>Plaintext ascii string</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Encrypt_ECB(System.Byte[])">
+            <summary>
+            Encrypts a byte array in ECB mode
+            </summary>
+            <param name="pt">Plaintext data</param>
+            <returns>Ciphertext bytes</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Decrypt_ECB(System.Byte[])">
+            <summary>
+            Decrypts a byte array (ECB)
+            </summary>
+            <param name="ct">Ciphertext byte array</param>
+            <returns>Plaintext</returns>
+        </member>
+        <member name="P:Easytl.SafeHelper.BlowFishCryptoServiceProvider.IV">
+            <summary>
+            Initialization vector for CBC mode.
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.SetRandomIV">
+            <summary>
+            Creates and sets a random initialization vector.
+            </summary>
+            <returns>The random IV</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.SetupKey(System.Byte[])">
+            <summary>
+            Sets up the S-blocks and the key
+            </summary>
+            <param name="cipherKey">Block cipher key (1-448 bits)</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Crypt_ECB(System.Byte[],System.Boolean)">
+            <summary>
+            Encrypts or decrypts data in ECB mode
+            </summary>
+            <param name="text">plain/ciphertext</param>
+            <param name="decrypt">true to decrypt, false to encrypt</param>
+            <returns>(En/De)crypted data</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.Crypt_CBC(System.Byte[],System.Boolean)">
+            <summary>
+            Encrypts or decrypts data in CBC mode
+            </summary>
+            <param name="text">plain/ciphertext</param>
+            <param name="decrypt">true to decrypt, false to encrypt</param>
+            <returns>(En/De)crypted data</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.XorBlock(System.Byte[]@,System.Byte[])">
+            <summary>
+            XoR encrypts two 8 bit blocks
+            </summary>
+            <param name="block">8 bit block 1</param>
+            <param name="iv">8 bit block 2</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.BlockEncrypt(System.Byte[]@)">
+            <summary>
+            Encrypts a 64 bit block
+            </summary>
+            <param name="block">The 64 bit block to encrypt</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.BlockDecrypt(System.Byte[]@)">
+            <summary>
+            Decrypts a 64 bit block
+            </summary>
+            <param name="block">The 64 bit block to decrypt</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.SetBlock(System.Byte[])">
+            <summary>
+            Splits the block into the two uint values
+            </summary>
+            <param name="block">the 64 bit block to setup</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.GetBlock(System.Byte[]@)">
+            <summary>
+            Converts the two uint values into a 64 bit block
+            </summary>
+            <param name="block">64 bit buffer to receive the block</param>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.encipher">
+            <summary>
+            Runs the blowfish algorithm (standard 16 rounds)
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.decipher">
+            <summary>
+            Runs the blowfish algorithm in reverse (standard 16 rounds)
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.BlowFishCryptoServiceProvider.round(System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+            one round of the blowfish algorithm
+            </summary>
+            <param name="a">See spec</param>
+            <param name="b">See spec</param>
+            <param name="n">See spec</param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.RC4CryptoServiceProvider.EncryptEx(System.Byte[],System.String)">
+            <summary>
+            加密
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.RC4CryptoServiceProvider.DecryptEx(System.Byte[],System.String)">
+            <summary>
+            解密
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.RC4CryptoServiceProvider.GetKey(System.Byte[],System.Int32)">
+            <summary>
+            打乱密码
+            </summary>
+            <param name="pass">密码</param>
+            <param name="kLen">密码箱长度</param>
+            <returns>打乱后的密码</returns>
+        </member>
+        <member name="T:Easytl.SafeHelper.CryptoBase">
+            <summary>
+            加密类基类
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.CryptoBase.Encode">
+            <summary>
+            编码转换器，用于字节码和字符串之间的转换，默认为本机编码
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.CryptoBase.Encrypt(System.String,System.String)">
+            <summary>
+            带编码模式的字符串加密
+            </summary>
+            <param name="data">要加密的数据</param>
+            <param name="pass">密码</param>
+            <param name="em">编码模式</param>
+            <returns>加密后经过编码的字符串</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.CryptoBase.Decrypt(System.Byte[],System.String)">
+            <summary>
+            带编码模式的字符串解密
+            </summary>
+            <param name="data">要解密的数据</param>
+            <param name="pass">密码</param>
+            <param name="em">编码模式</param>
+            <returns>明文</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.CryptoBase.EncryptEx(System.Byte[],System.String)">
+            <summary>
+            加密
+            </summary>
+            <param name="data">要加密的数据</param>
+            <param name="pass">密钥</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.CryptoBase.DecryptEx(System.Byte[],System.String)">
+            <summary>
+            解密
+            </summary>
+            <param name="data">要解密的数据</param>
+            <param name="pass">密码</param>
+            <returns>明文</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.ICrypto.EncryptEx(System.Byte[],System.String)">
+            <summary>
+            加密
+            </summary>
+            <param name="data">要加密的数据</param>
+            <param name="pass">密钥</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:Easytl.SafeHelper.ICrypto.DecryptEx(System.Byte[],System.String)">
+            <summary>
+            解密
+            </summary>
+            <param name="data">要解密的数据</param>
+            <param name="pass">密码</param>
+            <returns>明文</returns>
+        </member>
+        <member name="T:Easytl.SafeHelper.EncryptionHelper">
+            <summary>
+            各种加密方法类
+            </summary>
+        </member>
+        <member name="P:Easytl.SafeHelper.EncryptionHelper.Mode">
+            <summary>
+            获取或设置加密操作的加密模式
+            </summary>
+        </member>
+        <member name="P:Easytl.SafeHelper.EncryptionHelper.Padding">
+            <summary>
+            获取或设置加密操作的填充方式
+            </summary>
+        </member>
+        <member name="P:Easytl.SafeHelper.EncryptionHelper.Encode">
+            <summary>
+            获取或设置加密操作的编码模式
+            </summary>
+        </member>
+        <member name="P:Easytl.SafeHelper.EncryptionHelper.BlockSize">
+            <summary>
+            获取或设置加密操作的块大小（以位为单位）。
+            </summary>
+        </member>
+        <member name="P:Easytl.SafeHelper.EncryptionHelper.dwKeySize">
+            <summary>
+            RSA加密秘钥大小
+            </summary>
+        </member>
+        <member name="P:Easytl.SafeHelper.EncryptionHelper.throwEx">
+            <summary>
+            加解密有误时抛出异常
+            </summary>
+        </member>
+        <member name="T:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type">
+            <summary>
+            加密类型
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.DES_Base64">
+            <summary>
+            【对称算法】DES加密，密钥长度64位
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.DES_MD5">
+            <summary>
+            【对称算法】DES加密，密钥长度64位
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.DES3">
+            <summary>
+            【对称算法】3DES加密，密钥长度128、192位
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.AES">
+            <summary>
+            【对称算法】AES加密，密钥长度128、192、256位
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.RC2">
+            <summary>
+            【对称算法】RC2加密，密钥长度64、128位
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.RC4">
+            <summary>
+            【对称算法】RC4加密，密钥长度可变
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.RSA">
+            <summary>
+            【非对称算法】RSA加密
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.MD5">
+            <summary>
+            【散列算法】MD5, 32位加密(输出为32位16进制字符串)
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.MD5_16">
+            <summary>
+            【散列算法】MD5, 16位加密(输出为16位16进制字符串)
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.SHA1">
+            <summary>
+            【散列算法】SHA1加密(输出为16进制字符串)
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.Encrypt_Type.HMACSHA1">
+            <summary>
+            【散列算法】HMAC-SHA1加密(输出为16进制字符串)
+            </summary>
+        </member>
+        <member name="T:Easytl.SafeHelper.EncryptionHelper.InOutParaType">
+            <summary>
+            输入或输出字符串类型
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.InOutParaType.Str16">
+            <summary>
+            输入或输出16进制加密字符串
+            </summary>
+        </member>
+        <member name="F:Easytl.SafeHelper.EncryptionHelper.InOutParaType.Base64">
+            <summary>
+            输入或输出Base64加密字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.EncryptionHelper.Encrypt(Easytl.SafeHelper.EncryptionHelper.Encrypt_Type,System.String,System.String,System.String)">
+            <summary>
+            加密
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.EncryptionHelper.Encrypt(Easytl.SafeHelper.EncryptionHelper.InOutParaType,Easytl.SafeHelper.EncryptionHelper.Encrypt_Type,System.String,System.String,System.String)">
+            <summary>
+            加密（输出16进制加密字符串）
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.EncryptionHelper.Decrypt(Easytl.SafeHelper.EncryptionHelper.Encrypt_Type,System.Byte[],System.String,System.String)">
+            <summary>
+            解密
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.EncryptionHelper.Decrypt(Easytl.SafeHelper.EncryptionHelper.InOutParaType,Easytl.SafeHelper.EncryptionHelper.Encrypt_Type,System.String,System.String,System.String)">
+            <summary>
+            解密（输入16进制解密字符串）
+            </summary>
+        </member>
+        <member name="M:Easytl.SafeHelper.EncryptionHelper.Hash(System.Security.Cryptography.HashAlgorithm,System.String)">
+            <summary>
+            哈希算法
+            </summary>
+        </member>
+        <member name="T:Easytl.SqlHelper.OleDbHelper">
+            <summary>
+            OleDb数据库帮助类
+            </summary>
+        </member>
+        <member name="F:Easytl.SqlHelper.OleDbHelper.ole_connection">
+            <summary>
+            数据库连接类
+            </summary>
+        </member>
+        <member name="F:Easytl.SqlHelper.OleDbHelper.ole_command">
+            <summary>
+            数据库命令类
+            </summary>
+        </member>
+        <member name="F:Easytl.SqlHelper.OleDbHelper.ole_Adapter">
+            <summary>
+            数据表填充类
+            </summary>
+        </member>
+        <member name="M:Easytl.SqlHelper.OleDbHelper.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>  
+            <param name="db_path">数据库路径</param>  
+        </member>
+        <member name="M:Easytl.SqlHelper.OleDbHelper.ConnectConn(System.String)">
+            <summary>
+            测试数据库连接情况
+            </summary>
+            <param name="db_path">数据库路径</param>  
+        </member>
+        <member name="M:Easytl.SqlHelper.OleDbHelper.Close">
+            <summary>
+            关闭数据库连接
+            </summary>
+        </member>
+        <member name="M:Easytl.SqlHelper.OleDbHelper.ExecuteNonQuery(System.String)">
+            <summary>  
+            执行sql语句(返回受影响的行数)
+            </summary>  
+            <param name="strSql">sql语句</param>  
+            <returns>返回结果</returns>  
+        </member>
+        <member name="M:Easytl.SqlHelper.OleDbHelper.ExecuteScalar(System.String)">
+            <summary>  
+            执行sql语句(返回结果的第一行第一列)
+            </summary>  
+            <param name="strSql">sql语句</param>  
+            <returns>返回结果</returns>  
+        </member>
+        <member name="M:Easytl.SqlHelper.OleDbHelper.GetDataSet(System.String)">
+            <summary>
+            从数据库里面获取数据  
+            </summary>  
+            <param name="strSql">查询语句</param>  
+            <returns>数据列表</returns>  
+        </member>
+        <member name="T:Easytl.SqlHelper.SqlServerHelper">
+            <summary>
+            SqlServer数据库帮助类
+            </summary>
+        </member>
+        <member name="P:Easytl.SqlHelper.SqlServerHelper.ConnectionString">
+            <summary>
+            数据库连接字符串
+            </summary>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.ConnectConn(System.String)">
+            <summary>
+            测试数据库连接情况
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.ExecuteNonQuery(System.String,System.Data.CommandType)">
+            <summary>
+             用于对数据库进行增，删，改(返回受影响的行数)。
+            </summary>
+            <param name="sql"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.ExecuteNonQuery(System.String,System.Data.SqlClient.SqlParameter[],System.Data.CommandType)">
+            <summary>
+            用于对数据库进行增，删，改(返回受影响的行数)。
+            </summary>
+            <param name="sql"></param>
+            <param name="paras"></param>
+            <returns>int</returns>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.GetDataSet(System.String,System.Data.CommandType)">
+            <summary>
+            用于对数据库进行查询并获取一个数据表。
+            </summary>
+            <param name="sql"></param>
+            <returns>DataSet</returns>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.GetDataSet(System.String,System.Data.SqlClient.SqlParameter[],System.Data.CommandType)">
+            <summary>
+            用于对数据库进行查询并获取一个数据表。
+            </summary>
+            <param name="sql"></param>
+            <param name="paras"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.ExecuteScalar(System.String,System.Data.CommandType)">
+            <summary>
+            用于对数据库进行查询并返回第一行第一列。
+            </summary>
+            <param name="sql"></param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.ExecuteScalar(System.String,System.Data.SqlClient.SqlParameter[],System.Data.CommandType)">
+            <summary>
+            用于对数据库进行查询并返回第一行第一列。
+            </summary>
+            <param name="sql"></param>
+            <param name="paras"></param>
+            <returns>bool</returns>
+        </member>
+        <member name="M:Easytl.SqlHelper.SqlServerHelper.GetList(System.Int32,System.Int32,System.String)">
+            <summary>
+            分页获取数据列表
+            </summary>
+        </member>
+    </members>
+</doc>

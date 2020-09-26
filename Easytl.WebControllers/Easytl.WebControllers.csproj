@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CB23E256-21D8-40C2-859D-9815D73A367D}</ProjectGuid>
+    <ProjectGuid>{6D5BF2D6-1AE3-42D3-AA95-5D6FCC9EC590}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Easytl.Web</RootNamespace>
-    <AssemblyName>Easytl.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <RootNamespace>Easytl.WebControllers</RootNamespace>
+    <AssemblyName>Easytl.WebControllers</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,14 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Easytl">
-      <HintPath>..\Easytl\bin\Debug\Easytl.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,22 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileHelper\FolderHelper.cs" />
-    <Compile Include="PayHelper\WeiXinHelper.cs" />
-    <Compile Include="PayHelper\WeiXin\WXConvert.cs" />
-    <Compile Include="PayHelper\WeiXin\WXPara.cs" />
-    <Compile Include="PayHelper\WeiXin\WXP_apprequest.cs" />
-    <Compile Include="PayHelper\WeiXin\WXP_orderquery.cs" />
-    <Compile Include="PayHelper\WeiXin\WXP_unifiedorder.cs" />
-    <Compile Include="PayHelper\WeiXin\WXReturn.cs" />
-    <Compile Include="PayHelper\WeiXin\WXReturn_Success.cs" />
-    <Compile Include="PayHelper\WeiXin\WXR_orderquery.cs" />
-    <Compile Include="PayHelper\WeiXin\WXR_paynotify.cs" />
-    <Compile Include="PayHelper\WeiXin\WXR_unifiedorder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebHelper\RequestHelper.cs" />
-    <Compile Include="WebHelper\ResponseHelper.cs" />
-    <Compile Include="WebHelper\WebHelper.cs" />
+    <Compile Include="BaseController.cs" />
+    <Compile Include="CheckAttribute.cs" />
+    <Compile Include="PagerController.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Easytl.Web\Easytl.Web.csproj">
+      <Project>{cb23e256-21d8-40c2-859d-9815d73a367d}</Project>
+      <Name>Easytl.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Easytl\Easytl.csproj">
+      <Project>{ab0fad17-af42-42f2-ba87-446c79ef7612}</Project>
+      <Name>Easytl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
