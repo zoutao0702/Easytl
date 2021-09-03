@@ -1,0 +1,5 @@
+D:\Code\Easytl\Easytl\Easytl\bin\Release\Easytl.dll
+D:\Code\Easytl\Easytl\Easytl\bin\Release\Easytl.pdb
+D:\Code\Easytl\Easytl\Easytl\obj\Release\Easytl.dll
+D:\Code\Easytl\Easytl\Easytl\obj\Release\Easytl.pdb
+D:\Code\Easytl\Easytl\Easytl\obj\Release\Easytl.csprojResolveAssemblyReference.cache

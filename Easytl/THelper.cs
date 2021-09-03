@@ -490,6 +490,18 @@ namespace Easytl
         }
 
         /// <summary>
+        /// 字符串前补0（通过奇偶判断）
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static string Str_Add0_Before_OddEven(this string b)
+        {
+            if (b.Length % 2 != 0)
+                b = string.Concat("0", b);
+            return b;
+        }
+
+        /// <summary>
         /// 字符串前补0
         /// </summary>
         /// <param name="b"></param>
@@ -500,7 +512,7 @@ namespace Easytl
             blength = blength - b.Length;
             for (int i = 0; i < blength; i++)
             {
-                b = "0" + b;
+                b = string.Concat("0", b);
             }
             return b;
         }
@@ -516,7 +528,7 @@ namespace Easytl
             blength = blength - b.Length;
             for (int i = 0; i < blength; i++)
             {
-                b = b + "0";
+                b = string.Concat(b, "0");
             }
             return b;
         }
@@ -532,7 +544,7 @@ namespace Easytl
             blength = blength - b.Length;
             for (int i = 0; i < blength; i++)
             {
-                b = CharF + b;
+                b = string.Concat(CharF, b);
             }
             return b;
         }
@@ -548,7 +560,7 @@ namespace Easytl
             blength = blength - b.Length;
             for (int i = 0; i < blength; i++)
             {
-                b = b + CharF;
+                b = string.Concat(b, CharF);
             }
             return b;
         }
@@ -670,6 +682,21 @@ namespace Easytl
                 StrRev += Str.Substring(i * ReverseNum, ReverseNum);
             }
             return StrRev;
+        }
+
+        /// <summary>
+        /// 替换某个位置的字符串
+        /// </summary>
+        /// <param name="Str">操作的字符串</param>
+        /// <param name="StartIndex">开始替换的位置</param>
+        /// <param name="Length">替换的长度</param>
+        /// <param name="ReplaceStr">要替换成的字符串</param>
+        /// <returns></returns>
+        public static string Replace(this string Str, int StartIndex, int Length, string ReplaceStr)
+        {
+            string StrBef = Str.Substring(0, StartIndex);
+            string StrAft = Str.Substring(StartIndex + Length);
+            return string.Concat(StrBef, ReplaceStr, StrAft);
         }
 
         /// <summary>
@@ -837,10 +864,26 @@ namespace Easytl
         /// <summary>
         /// 获取时间戳
         /// </summary>
+        public static ulong GetTimestamp(DateTime time, bool UTC = false, string StartDateTime = "1970/01/01 00:00:00", bool Milliseconds = false)
+        {
+            TimeSpan span = (((UTC) ? TimeZoneInfo.ConvertTimeToUtc(time) : time) - Convert.ToDateTime(StartDateTime));
+            return Convert.ToUInt64((Milliseconds) ? span.TotalMilliseconds : span.TotalSeconds);
+        }
+
+        /// <summary>
+        /// 获取当前时间戳
+        /// </summary>
         public static ulong GetTimestamp(bool UTC = false, string StartDateTime = "1970/01/01 00:00:00", bool Milliseconds = false)
         {
-            TimeSpan span = (((UTC) ? DateTime.UtcNow : DateTime.Now) - Convert.ToDateTime(StartDateTime));
-            return Convert.ToUInt64((Milliseconds) ? span.TotalMilliseconds : span.TotalSeconds);
+            return GetTimestamp(DateTime.Now, UTC, StartDateTime, Milliseconds);
+        }
+
+        /// <summary>
+        /// 通过时间戳获取当前时间
+        /// </summary>
+        public static DateTime GetTimeByTimestamp(ulong Timestamp, bool UTC = false, string StartDateTime = "1970/01/01 00:00:00", bool Milliseconds = false)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc((Milliseconds) ? Convert.ToDateTime(StartDateTime).AddMilliseconds(Timestamp) : Convert.ToDateTime(StartDateTime).AddSeconds(Timestamp), (UTC) ? TimeZoneInfo.Utc : TimeZoneInfo.Local);
         }
 
         /// <summary>
